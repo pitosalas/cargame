@@ -10,9 +10,9 @@ import com.salas.Tile.TDir;
 public class RoadmapCarBrain implements ITimerCallback {
 
 	RoadmapCar car;
-	Roadmap map;
+	GameMap map;
 
-	public RoadmapCarBrain(Roadmap theMap, RoadmapCar theCar) {
+	public RoadmapCarBrain(GameMap theMap, RoadmapCar theCar) {
 		car = theCar;
 		map = theMap;
 	}

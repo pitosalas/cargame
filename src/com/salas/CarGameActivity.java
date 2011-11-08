@@ -18,13 +18,15 @@ public class CarGameActivity extends CommonActivity {
 	private Car car1;
 	private PathCar car2;
 	private RoadmapCar car3;
-	private Roadmap rmap;
-	private RoadmapSprite tileMgr;
+	private GameMap rmap;
+	private GameMapSprite tileMgr;
 	private Scene scene;
 	private FixedStepPhysicsWorld world;
-	private CityBackground bkground;
+	private MapBackground bkground;
 	private Dashboard dash;
 	private DashTextBox messageBox1, messageBox2;
+	
+	private static float INITIAL_ZOOM = 0.5f;
 
 	@Override
 	public Engine onLoadEngine() {
@@ -32,7 +34,6 @@ public class CarGameActivity extends CommonActivity {
 		configCamera();
 		car1 = new Car();
 		car2 = new PathCar();
-		bkground = new CityBackground();
 
 		car3 = new RoadmapCar();
 		
@@ -49,7 +50,7 @@ public class CarGameActivity extends CommonActivity {
 		car2.loadResources(this, engine);
 		car3.loadResources(this, engine);
 		DashTextBox.loadResources(this);
-		RoadmapSprite.loadResources(this, engine);
+		GameMapSprite.loadResources(this, engine);
 	}
 
 	@Override
@@ -57,7 +58,8 @@ public class CarGameActivity extends CommonActivity {
 		
 		scene = new Scene();
 		world = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
-		rmap = Roadmap.createSample1();
+		rmap = GameMap.createSample3();
+		bkground = new MapBackground(rmap, scene);
 		
 
 		dash.createAndAttach(this, scene, camera);
@@ -66,9 +68,13 @@ public class CarGameActivity extends CommonActivity {
 		dash.addTextBox(messageBox1);
 		dash.addTextBox(messageBox2);
 
-		bkground.createWalls(screenHeight, screenWidth, scene, world);
+		camera.setZoomFactor(INITIAL_ZOOM);
 		bkground.setBackgroundColor(scene);
-		bkground.createTiledBackground(screenHeight, screenWidth, scene, rmap);
+		
+		TPos center = rmap.getCenterPos();
+		camera.setCenter(center.x, center.y);
+		bkground.createTiledBackground(screenHeight, screenWidth);
+		bkground.createWalls(world);
 
 //		prepareCar1();
 //		prepareCar2();
