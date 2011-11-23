@@ -13,7 +13,7 @@ public class RoadmapCar extends Car {
 	static int TURNFORCE = 7;
 	static float TURN_EPSILON = 0.1f;
 
-	private GameMap rmap;
+	private GameLevel rmap;
 	private Tile curTile;
 	private Tile turnTile;
 	private TDir toDirection;
@@ -21,7 +21,7 @@ public class RoadmapCar extends Car {
 	boolean driving;
 	boolean turning;
 	
-	public void placeOnRoadmap(GameMap aRoadmap) {
+	public void placeOnRoadmap(GameLevel aRoadmap) {
 		rmap = aRoadmap;
 		TPos start = rmap.getStartingTPos();
 		toDirection = rmap.getStartingDirection();

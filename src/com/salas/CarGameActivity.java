@@ -18,15 +18,16 @@ public class CarGameActivity extends CommonActivity {
 	private Car car1;
 	private PathCar car2;
 	private RoadmapCar car3;
-	private GameMap rmap;
+	private GameLevel rmap;
 	private GameMapSprite tileMgr;
 	private Scene scene;
 	private FixedStepPhysicsWorld world;
 	private MapBackground bkground;
 	private Dashboard dash;
 	private DashTextBox messageBox1, messageBox2;
+	private LevelManager levels;
 	
-	private static float INITIAL_ZOOM = 0.5f;
+	private static float INITIAL_ZOOM = 0.2f;
 
 	@Override
 	public Engine onLoadEngine() {
@@ -58,7 +59,9 @@ public class CarGameActivity extends CommonActivity {
 		
 		scene = new Scene();
 		world = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
-		rmap = GameMap.createSample3();
+		levels = new LevelManager();
+		levels.loadLevelsFromAssets(this);
+		rmap = levels.getRoadMap(2);
 		bkground = new MapBackground(rmap, scene);
 		
 

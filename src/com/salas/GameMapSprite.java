@@ -40,6 +40,9 @@ public class GameMapSprite extends TiledSprite {
 		// Blocked in all directions (not a road really)
 		BlockedNESW(0, 5, "TTTT");
 		
+		// Grass in basic map (only used in early versions)
+//		Grass(0, 5, "TTTT");
+		
 		public TCoord tileCoord;
 		public String coding;
 
@@ -53,7 +56,7 @@ public class GameMapSprite extends TiledSprite {
 	}
 
 	// Create a sprite for the indicate Tile on the indicated Roadmap
-	public GameMapSprite(GameMap rmap, Tile tile) {
+	public GameMapSprite(GameLevel rmap, Tile tile) {
 		super(rmap.getSpriteTLPos(tile).x, rmap.getSpriteTLPos(tile).y, roadOrParkTextureRegion(tile).deepCopy());
 		TileImageType ttype = getTileTypefromTile(tile); 
 		this.setCurrentTileIndex(ttype.tileCoord.col, ttype.tileCoord.row);
@@ -65,12 +68,12 @@ public class GameMapSprite extends TiledSprite {
 		roadTilesTextureAtlas = new BitmapTextureAtlas(2048, 1024, TextureOptions.DEFAULT);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("tiles/");
 		roadTilesTextureRegion = BitmapTextureAtlasTextureRegionFactory
-								.createTiledFromAsset(roadTilesTextureAtlas, ctx, "roadtiles3.png",
+								.createTiledFromAsset(roadTilesTextureAtlas, ctx, "roadtiles4.png",
 									  0, 0, TileImageType.columns, TileImageType.rows);
 		parkTilesTextureAtlas = new BitmapTextureAtlas(2048, 1024, TextureOptions.DEFAULT);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("tiles/");
 		parkTilesTextureRegion = BitmapTextureAtlasTextureRegionFactory
-								.createTiledFromAsset(parkTilesTextureAtlas, ctx, "parktiles3.png",
+								.createTiledFromAsset(parkTilesTextureAtlas, ctx, "parktiles4.png",
 									  0, 0, TileImageType.columns, TileImageType.rows);
 
 		engine.getTextureManager().loadTextures(roadTilesTextureAtlas, parkTilesTextureAtlas);
@@ -80,12 +83,14 @@ public class GameMapSprite extends TiledSprite {
 //	Return one of the two texture regions depnding on whether this Tile is for road or park
 	static private TiledTextureRegion roadOrParkTextureRegion(Tile t) {
 		return t.isRoad() ? roadTilesTextureRegion : parkTilesTextureRegion;
+//		return  roadTilesTextureRegion;
 	}
 
 	// Examine this Tile and determine which TileImageType we need to render for it in the background
 	TileImageType getTileTypefromTile(Tile t) {
 		boolean[] vec = t.getBlocked();
 		int encode = encodeBlockedVector(vec);
+//		if (!t.isRoad()) return TileImageType.Grass;
 		switch (encode) {
 			case 0: return TileImageType.BlockedZ;
 			case 1: return TileImageType.BlockedN;

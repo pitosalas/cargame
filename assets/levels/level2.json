@@ -1,0 +1,28 @@
+{
+	level: 2,
+	rows: 16,
+	cols: 16,
+
+	actors: [
+				{name: "Car1", row: 0, col: 0, dir: south},
+			 	{name: "Car2", row: 3, col: 3, direction: north}],
+			 	
+	map: 	[	["NWR", "NER", "NEWR", "WNR", "NSR", "NR", "NSR", "NR", "NSR", "NR", "NR", "NR", "NSR", "NER", "X", "X"],
+				["EWR", "SWR", "R", "SER", "XR", "EWR", "XR", "EWR", "XR", "EWR", "WR", "SR", "NSR", "ER", "X", "X"],
+				["EWR", "XR", "WR", "NSR", "NSR", "R", "NSR", "R", "NR", "R", "R", "NR", "NSR", "SR", "NSR", "NER"],
+				["WR", "NR", "R", "NER", "XR", "EWR", "XR", "WR", "R", "ER", "EWR", "EWR", "X", "X", "X", "EWR"],
+				["EWR", "EWR", "EWR", "WR", "NSR", "R", "NR", "R", "SR", "SR", "SR", "SR", "NSR", "NSR", "NSR", "ER"],
+				["EWR", "EWR", "EWR", "EWR", "XR", "EWR", "EWR", "EWR", "X", "X", "X", "X", "X", "X", "X", "EWR"],
+				["EWR", "EWR", "EWR", "EWR", "XR", "EWR", "EWR", "EWR", "X", "X", "X", "X", "X", "X", "X", "EWR"],
+				["WR", "SR", "R", "SR", "NSR", "SR", "SR", "SR", "NSR", "NSR", "NR", "NSR", "NSR", "NR", "NR", "ER"],
+				["EWR", "X", "WR", "NSR", "NSR", "NSR", "NSR", "NSR", "NSR", "NSR", "SR", "NSER", "NSWR", "ER", "EWR", "EWR"],
+				["WR", "NSR", "R", "NR", "NR", "NSR", "NSR", "NSR", "NR", "NSR", "NSR", "NSR", "NSR", "ER", "EWR", "EWR"],
+				["EWR", "X", "EWR", "EWR", "WSR", "NSER", "X", "X", "EWR", "X", "X", "X", "X", "EWR", "EWR", "EWR"],
+				["WER", "X", "EWR", "EWR", "X", "X", "X", "X", "WR", "NSR", "NSR", "NR", "NSR", "SR", "SR", "ER"],
+				["EWR", "X", "EWR", "EWR", "X", "X", "X", "X", "EWR", "X", "X", "EWR", "X", "X", "X", "EWR"],
+				["WR", "NSR", "R", "R", "NSR", "NR", "NSR", "NR", "R", "NSER", "NSWR", "R", "NSR", "NSR", "NSR", "ER"],
+				["EWR", "X", "EWR", "EWR", "X", "EWR", "X", "EWR", "WR", "NSR", "NSR", "R", "NSR", "NR", "NSR", "ER"],
+				["SWR", "NSR", "SR", "SER", "X", "SWR", "NS", "SER", "SWR", "NSR", "NSR", "ESR", "X", "WSR", "NSR", "ESR"]],
+	roadImages: "",
+	parkImages: ""
+}

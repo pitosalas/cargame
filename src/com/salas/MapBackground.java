@@ -14,10 +14,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class MapBackground {
 	
-	private GameMap rmap;
+	private GameLevel rmap;
 	private Scene scene;
 	
-	MapBackground(GameMap map, Scene s) {
+	MapBackground(GameLevel map, Scene s) {
 		rmap = map;
 		scene = s;
 	}
