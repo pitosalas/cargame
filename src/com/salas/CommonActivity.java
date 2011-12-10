@@ -2,16 +2,20 @@ package com.salas;
 
 import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.engine.camera.ZoomCamera;
-import org.anddev.andengine.engine.camera.hud.HUD;
 import org.anddev.andengine.engine.options.EngineOptions;
 import org.anddev.andengine.engine.options.EngineOptions.ScreenOrientation;
 import org.anddev.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.anddev.andengine.entity.Entity;
-import org.anddev.andengine.entity.primitive.Rectangle;
-import org.anddev.andengine.entity.text.ChangeableText;
+import org.anddev.andengine.entity.scene.Scene;
+import org.anddev.andengine.entity.scene.Scene.IOnSceneTouchListener;
 import org.anddev.andengine.extension.input.touch.controller.MultiTouch;
 import org.anddev.andengine.extension.input.touch.controller.MultiTouchController;
+import org.anddev.andengine.extension.input.touch.detector.PinchZoomDetector;
+import org.anddev.andengine.extension.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorListener;
 import org.anddev.andengine.extension.input.touch.exception.MultiTouchException;
+import org.anddev.andengine.input.touch.TouchEvent;
+import org.anddev.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
+import org.anddev.andengine.input.touch.detector.ScrollDetector;
+import org.anddev.andengine.input.touch.detector.SurfaceScrollDetector;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
 
 import android.util.DisplayMetrics;
@@ -27,7 +31,8 @@ import android.widget.Toast;
  * @author Nicolas Gramlich
  * @since 22:10:28 - 11.04.2010
  */
-public abstract class CommonActivity extends BaseGameActivity {
+public abstract class CommonActivity extends BaseGameActivity implements
+	IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -37,8 +42,13 @@ public abstract class CommonActivity extends BaseGameActivity {
 	public int screenWidth;
 	public int screenHeight;
 	protected ZoomCamera camera;
+	private SurfaceScrollDetector scrollDetector;
+	private PinchZoomDetector pinchDetector;
+
 
 	public Engine engine;
+
+	private float startZoomfactor;
 
 
 	@Override
@@ -110,4 +120,68 @@ public abstract class CommonActivity extends BaseGameActivity {
 		engineOptions.getTouchOptions().setRunOnUpdateThread(true);
 		return new Engine(engineOptions);
 	}
+	
+	public void configSceneTouchNScroll(Scene s, boolean pinchEnabled) {
+		s.setOnAreaTouchTraversalFrontToBack();
+		scrollDetector = new SurfaceScrollDetector(this);
+		if (pinchEnabled) {
+			try {
+				pinchDetector = new PinchZoomDetector(this);
+			} catch (final MultiTouchException e) {
+				pinchDetector = null;
+			}
+		} else {
+			pinchDetector = null;
+		}
+		s.setOnSceneTouchListener(this);
+		s.setTouchAreaBindingEnabled(true);
+	}
+	
+	@Override
+	public void onScroll(final ScrollDetector pScollDetector,
+			final TouchEvent pTouchEvent, final float pDistanceX,
+			final float pDistanceY) {
+		final float zoomFactor = camera.getZoomFactor();
+		camera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY / zoomFactor);
+	}
+
+	@Override
+	public void onPinchZoomStarted(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent) {
+		startZoomfactor = camera.getZoomFactor();
+	}
+
+	@Override
+	public void onPinchZoom(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent, final float pZoomFactor) {
+		camera.setZoomFactor(startZoomfactor * pZoomFactor);
+	}
+
+	@Override
+	public void onPinchZoomFinished(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent, final float pZoomFactor) {
+		camera.setZoomFactor(startZoomfactor * pZoomFactor);
+	}
+
+	@Override
+	public boolean onSceneTouchEvent(final Scene pScene,
+			final TouchEvent pSceneTouchEvent) {
+		if (pinchDetector != null) {
+			pinchDetector.onTouchEvent(pSceneTouchEvent);
+
+			if (pinchDetector.isZooming()) {
+				scrollDetector.setEnabled(false);
+			} else {
+				if (pSceneTouchEvent.isActionDown()) {
+					scrollDetector.setEnabled(true);
+				}
+				scrollDetector.onTouchEvent(pSceneTouchEvent);
+			}
+		} else {
+			this.scrollDetector.onTouchEvent(pSceneTouchEvent);
+		}
+
+		return true;
+	}
+
 }

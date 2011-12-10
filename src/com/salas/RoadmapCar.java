@@ -10,10 +10,10 @@ import com.salas.Tile.TDir;
 public class RoadmapCar extends Car {
 
 	static int VELOCITY = 5;
-	static int TURNFORCE = 7;
+	static int TURNFORCE = 5;
 	static float TURN_EPSILON = 0.1f;
 
-	private GameLevel rmap;
+	private GameLevel level;
 	private Tile curTile;
 	private Tile turnTile;
 	private TDir toDirection;
@@ -21,10 +21,14 @@ public class RoadmapCar extends Car {
 	boolean driving;
 	boolean turning;
 	
-	public void placeOnRoadmap(GameLevel aRoadmap) {
-		rmap = aRoadmap;
-		TPos start = rmap.getStartingTPos();
-		toDirection = rmap.getStartingDirection();
+	public RoadmapCar(GameActor actor) {
+		super(actor);
+	}
+
+	public void placeOnRoadmap(GameLevel aLevel) {
+		level = aLevel;
+		TPos start = actor.getStartingTPos(level);
+		toDirection = actor.getDir();
 		setPosAndRotation(start, toDirection);
 		driving = false;
 		Log.v("CARDRIVE", "Car placed on map. Pos:"+start+", dir:"+toDirection);
@@ -53,17 +57,17 @@ public class RoadmapCar extends Car {
 
 	public boolean atIntersection() {
 		updateRoadmapTile();
-		return rmap.isIntersection(toDirection, curTile);
+		return level.isIntersection(toDirection, curTile);
 	}
 	
 	public boolean atDeadEnd() {
 		updateRoadmapTile();
-		return rmap.isDeadEnd(toDirection, curTile);
+		return level.isDeadEnd(toDirection, curTile);
 	}
 
 
 	void updateRoadmapTile() {
-		curTile = rmap.getTile(new TPos(sprite.getX(), sprite.getY()));
+		curTile = level.getTile(new TPos(sprite.getX(), sprite.getY()));
 	}
 
 // These are called for each frame to set the velocity 	
@@ -84,7 +88,7 @@ public class RoadmapCar extends Car {
 	}
 
 	public void makeTurn(TDir newDir) {
-		Log.v("CARTURN", "Making a turn from " + toDirection + " to " + newDir);
+		Log.v("CARTURN", "Making a turn old heading is:" + toDirection + " to new heading:   " + newDir);
 		fromDirection = toDirection;
 		setDirection(newDir);
 		turning = true;
@@ -105,10 +109,12 @@ public class RoadmapCar extends Car {
 		TDir s = TDir.south;
 		TPos c = null;
 		
-		if ((f == n && t == e) || (f == w && t == s)) c = rmap.getSpriteBRPos(curTile);
-		if ((f == n && t == w) || (f == e && t == s)) c = rmap.getSpriteBLPos(curTile);
-		if ((f == s && t == e) || (f == e && t == n)) c = rmap.getSpriteTLPos(curTile);
-		if ((f == w && t == n) || (f == s && t == e)) c = rmap.getSpriteTRPos(curTile);
+		if ((f == n && t == e) || (f == w && t == s)) c = level.getSpriteBRPos(curTile);
+		if ((f == n && t == w) || (f == e && t == s)) c = level.getSpriteBLPos(curTile);
+		if ((f == s && t == w) || (f == e && t == n)) c = level.getSpriteTLPos(curTile);
+		if ((f == w && t == n) || (f == s && t == e)) c = level.getSpriteTRPos(curTile);
+
+		assert c != null;
 		
 		Vector2 centVect = velVector(getBodyPos(), tPos2Vector2(c), TURNFORCE);
 		Log.v("CARTURN","Turning "+fromDirection+" to "+toDirection+")");
@@ -118,61 +124,10 @@ public class RoadmapCar extends Car {
 		
 		// Apply turn force of strength TURNFORCE in the direction of the center of the turn "c"
 		body.applyForce(centVect, body.getWorldCenter());
-		if(rmap.getTile(new TPos(sprite.getX(), sprite.getY())) != turnTile) {
+		if(level.getTile(new TPos(sprite.getX(), sprite.getY())) != turnTile) {
 			// we've left the tile, so the turn is officially over.
 			Log.v("CARTURN", "Turn completed.");
 			turnTile = null;
-			turning = false;
-		}
-	}
-
-	public void handleTurn1() {
-		Vector2 old = body.getLinearVelocity();
-		float newX = 0, newY = 0;
-		float oldX = old.x, oldY = old.y;
-		Log.v("CARTURN","Still turning "+fromDirection+" to "+toDirection+". Pos=" + body.getPosition() + 
-				", speed= " + body.getLinearVelocity());
-		
-		// Slow down in FROM direction for turn
-		switch (fromDirection) {
-		case north:
-			if (!near(oldY, 0)) newY = TURNFORCE; break;
-		case south:
-			if (!near(oldY, 0)) newY = -TURNFORCE; break;
-		case east:
-			if (!near(oldX, 0)) newX = -TURNFORCE; break;
-		case west:
-			if (!near(oldX, 0)) newX = TURNFORCE; break;
-		}
-		
-		// Speed up in TO direction for turn
-		switch (toDirection) {
-		case north:
-			if (!near(newY, -VELOCITY)) newY = -TURNFORCE; break;
-		case south:
-			if (!near(newY, VELOCITY)) newY = TURNFORCE; break;
-		case east:
-			if (!near(newX, VELOCITY)) newX = TURNFORCE; break;
-		case west:
-			if (!near(newX, VELOCITY)) newX =  - TURNFORCE; break;
-		}
-		Log.v("CARTURN", "  oldV=("+oldX+","+oldY+")... newV=("+newX+","+newY+")");
-		body.applyForce(new Vector2(newX, newY), body.getWorldCenter());
-		
-		// Check if we have completed the turn
-		boolean turnComplete = false;
-		switch (toDirection) {
-		case north:
-			if (near(newX, 0) && near(newY, -TURNFORCE)) turnComplete = true; break; 
-		case south:
-			if (near(newX, 0) && near(newY, TURNFORCE)) turnComplete = true; break; 
-		case east:
-			if (near(newX, TURNFORCE) && near(newY, 0)) turnComplete = true; break; 
-		case west:
-			if (near(newX, - TURNFORCE) && near(newY, 0)) turnComplete = true; break; 
-		}
-		if (turnComplete) {
-			Log.v("CARTURN", "Turn completed");
 			turning = false;
 		}
 	}

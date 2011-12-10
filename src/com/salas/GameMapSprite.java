@@ -53,7 +53,7 @@ public class GameMapSprite extends TiledSprite {
 			tileCoord = new TCoord(row, column);
 			coding = code;
 		}
-	}
+	} 
 
 	// Create a sprite for the indicate Tile on the indicated Roadmap
 	public GameMapSprite(GameLevel rmap, Tile tile) {
@@ -68,12 +68,12 @@ public class GameMapSprite extends TiledSprite {
 		roadTilesTextureAtlas = new BitmapTextureAtlas(2048, 1024, TextureOptions.DEFAULT);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("tiles/");
 		roadTilesTextureRegion = BitmapTextureAtlasTextureRegionFactory
-								.createTiledFromAsset(roadTilesTextureAtlas, ctx, "roadtiles4.png",
+								.createTiledFromAsset(roadTilesTextureAtlas, ctx, "roadtiles7.png",
 									  0, 0, TileImageType.columns, TileImageType.rows);
 		parkTilesTextureAtlas = new BitmapTextureAtlas(2048, 1024, TextureOptions.DEFAULT);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("tiles/");
 		parkTilesTextureRegion = BitmapTextureAtlasTextureRegionFactory
-								.createTiledFromAsset(parkTilesTextureAtlas, ctx, "parktiles4.png",
+								.createTiledFromAsset(parkTilesTextureAtlas, ctx, "parktiles7.png",
 									  0, 0, TileImageType.columns, TileImageType.rows);
 
 		engine.getTextureManager().loadTextures(roadTilesTextureAtlas, parkTilesTextureAtlas);

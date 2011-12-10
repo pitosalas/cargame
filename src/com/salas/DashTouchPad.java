@@ -4,8 +4,6 @@ import org.anddev.andengine.entity.primitive.Rectangle;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 
-import android.util.Log;
-
 public class DashTouchPad {
 
 	public Shape touchpad;
@@ -18,7 +16,8 @@ public class DashTouchPad {
 			public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, 
 										 final float pTouchAreaLocalX, 
 										 final float pTouchAreaLocalY) {
-				acar.applyForce(direction);
+// do something
+				
 				return true;
 			};
 		};

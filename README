@@ -1,0 +1,13 @@
+Readme for Cargame
+
+One of the problems was simply getting a city map that looks 'right' in terms of proportions.
+
+Notes about roads and blocks (from wikipedia)
+
+- A city block is 300x300' (there are variants to this but I thought it was a good average). This includes the sidewalk
+1/2 of the street
+- A driving lane is around 10'
+- A sidewalk is around 6'
+
+Graphics Files
+- Using one pixel == 1 foot to create a reasonable model

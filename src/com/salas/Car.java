@@ -21,21 +21,29 @@ import com.salas.Tile.TDir;
 import android.content.Context;
 import android.util.Log;
 
-
-
+//
+// Represents an instantiated GameActor, with the associated Sprite (visual)
+// and Body (Physics) representations.
+//
 public class Car {
 	private static final int CAR_SIZE = 16;
 
 	private BitmapTextureAtlas carTexture;
 	private TiledTextureRegion carTextureRegion;
-	private int counter;
-
-	Body body;
-	TiledSprite sprite;
+	protected GameActor actor;
+	protected Body body;
+	protected TiledSprite sprite;
 	
 	public Car() {
 	}
 	
+	public Car(GameActor anActor) {
+		actor = anActor;
+	}
+	public Body getBody() {
+		return body;
+	}
+
 	public void loadResources(CommonActivity ctx, Engine engine) {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		carTexture = new BitmapTextureAtlas(128, 16, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -76,63 +84,11 @@ public class Car {
 	}
 	
 	public String toString() {
-		return "Car Body pos:"+toString(body.getPosition())+
-				  " spd:"+toString(body.getLinearVelocity());
-	}
-	
-	final static int FORCE_RIGHT = 0;
-	final static int FORCE_DOWN = 1;
-	final static int FORCE_LEFT = 2;
-	final static int FORCE_UP = 3;
-	final static int IMP_RIGHT = 4;
-	final static int IMP_DOWN = 5;
-	final static int IMP_LEFT = 6;
-	final static int IMP_UP = 7;
-
-	
-	public enum CarCommand {
-		ST_FORW,
-		ST_BACK,
-		ST_LEFT,
-		ST_RIGHT,
-		F_FORW,
-		F_BACK,
-		F_LEFT,
-		F_RIGHT,
-		I_FORW,
-		I_BACK,
-		I_LEFT,
-		I_RIGHT
-	}
-	
-	public void do_command(CarCommand cmd) {
-		Log.v("CAR", "Command: " + cmd.toString());
-	}
-
-	
-	public void applyForce(int dir) {
-		counter++;
-		Vector2 vect = new Vector2();
-		switch (dir) {
-	        case FORCE_RIGHT: vect = new Vector2(3.0f, 0.0f); break;
-	        case IMP_RIGHT: vect = new Vector2(1.0f, 0.0f); break;
-	        case FORCE_LEFT: vect = new Vector2(-3.0f, 0.0f); break;
-	        case IMP_LEFT: vect = new Vector2(-1.0f, 0.0f); break;
-	        case FORCE_UP: vect = new Vector2(0.0f, -3.0f); break;
-	        case IMP_UP: vect = new Vector2(0.0f, -1.0f); break;
-	        case FORCE_DOWN: vect = new Vector2(0.0f, 3.0f); break;
-	        case IMP_DOWN: vect = new Vector2(0.0f, 1.0f); break;
+		if (body != null) {
+			return "Car Body pos:"+toString(body.getPosition())+" spd:"+toString(body.getLinearVelocity());
+		} else {
+			return "No pos yet";
 		}
-		Vector2 place = body.getWorldCenter();
-		if (dir == FORCE_RIGHT || dir == FORCE_LEFT || dir == FORCE_DOWN || dir == FORCE_UP) 
-			{ 
-			body.applyForce(vect, place);
-			}
-		else 
-			{ 
-			body.applyLinearImpulse(vect, place);
-			}
-		Log.v("CAR", "Applied force: " + dir + "("+counter+")");
 	}
 	
 }

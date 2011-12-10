@@ -5,7 +5,7 @@
 
 	actors: [
 				{name: "Car1", row: 0, col: 0, dir: south},
-			 	{name: "Car2", row: 3, col: 3, direction: north}],
+			 	{name: "Car2", row: 3, col: 3, dir: north}],
 			 
 	map: 	[ 	[ "NWR", "NSR",  "NR", "NSR", "NSR", "NSR", "NR",  "NESR" ],
 				[ "EWR", "NSEWS","EWR","NWS", "NS" , "NE",  "EWR", "NWSE"],

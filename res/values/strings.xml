@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Car2ExpActivity!</string>
-    <string name="app_name">Car2Exp</string>
+    <string name="app_name">City Car</string>
 </resources>

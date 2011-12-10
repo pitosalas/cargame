@@ -7,8 +7,6 @@ import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.input.touch.TouchEvent;
 
-import com.salas.Car.CarCommand;
-
 public class Dashboard {
 	
 	private Rectangle hudTop;
@@ -46,15 +44,15 @@ public class Dashboard {
 	}
 
 	public void createAndAddPadBank(float xInit, float yPos, float width, float height,
-									final Car acar, CarCommand[] padBankArgs) {
+									final Car acar, String[] padBankArgs) {
 		float xPos = xInit;
-		for (final CarCommand arg:padBankArgs) {
+		for (final String arg:padBankArgs) {
 			Shape touchpad = new Rectangle(xPos, yPos, width, height) {
 				public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, 
 						 final float pTouchAreaLocalX, 
 						 final float pTouchAreaLocalY) {
 							if (pSceneTouchEvent.isActionUp()) {
-								acar.do_command(arg);
+								// do something.
 							}
 							return true;
 				}

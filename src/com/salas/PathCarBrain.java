@@ -4,6 +4,7 @@ import org.anddev.andengine.engine.handler.timer.ITimerCallback;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 public class PathCarBrain implements ITimerCallback {
 	PathCar car;
@@ -24,7 +25,7 @@ public class PathCarBrain implements ITimerCallback {
 			currSeg = car.getNextPathSegment();			
 			// Make sure body is at the start of the segment.
 			if (currSeg != null) {
-				car.body.setTransform(currSeg.start, 0.0f);
+				car.getBody().setTransform(currSeg.start, 0.0f);
 //				car.sprite.setPosition(currSeg.start.x, currSeg.start.y);
 			}
 		}
@@ -33,17 +34,18 @@ public class PathCarBrain implements ITimerCallback {
 
 	private void drive_along() {
 		if (currSeg == null) return;
-		float curX = car.body.getPosition().x;
-		float curY = car.body.getPosition().y;
+		Body bod = car.getBody();
+		float curX = bod.getPosition().x;
+		float curY = bod.getPosition().y;
 		float pathLen = currSeg.distance();
 		float distSoFar = currSeg.start.dst(curX, curY);
 		float fractSoFar = distSoFar / pathLen;
-		Vector2 place = car.body.getWorldCenter();
+		Vector2 place = bod.getWorldCenter();
 		if (fractSoFar < 0.5) {
 			Vector2 force = currSeg.velVector(10.0);
-			car.body.applyForce(force, place);
+			bod.applyForce(force, place);
 		} else if (fractSoFar >= 1.0) {
-			car.body.setLinearVelocity(0,0);
+			bod.setLinearVelocity(0,0);
 			currSeg = null;
 		}
 	}

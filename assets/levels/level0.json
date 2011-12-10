@@ -3,8 +3,8 @@
 	rows: 4,
 	cols: 6,
 	actors: [
-				{name: "Car1", row: 3, col: 2, dir: north},
-			 	{name: "Car2", row: 3, col: 3, direction: north}],
+				{name: "Car1", row: 3, col: 2, dir: north}
+			],
 			 
 	map: 	[ 	[ "WNR", "NSR", "NSR", "NSR", "NSR", "NER" ],
 			  	[ "WER", "WNS", "NS", "NS", "NSE", "EWR" ],
