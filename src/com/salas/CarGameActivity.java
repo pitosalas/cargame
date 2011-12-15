@@ -3,101 +3,101 @@ package com.salas;
 import java.util.ArrayList;
 
 import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.util.*;
 import org.anddev.andengine.engine.handler.timer.TimerHandler;
 import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.background.ColorBackground;
 import org.anddev.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 
 import com.badlogic.gdx.math.Vector2;
 
-import android.app.Activity;
-import android.os.Bundle;
-
 public class CarGameActivity extends CommonActivity {
 
-	private ArrayList<Car> cars;
-	private GameLevel currLevel;
-	private Scene scene;
-	private FixedStepPhysicsWorld world;
-	private MapBackground bkground;
-	private Dashboard dash;
+	private LevelMapShapes levelMapShapes;
 	private DashTextBox messageBox1, messageBox2;
-	private LevelManager levels;
-	private boolean multiTouch;
+	private GameContext gameCtx;
 	
 	private static float INITIAL_ZOOM = 0.25f;
 
 	@Override
 	public Engine onLoadEngine() {
+		gameCtx = new GameContext();
 		configScreenInfo();
 		configCamera();
-		dash = new Dashboard(this);
-		engine = configEngine();
-		levels = new LevelManager();
-		cars = new ArrayList<Car>();
-		multiTouch = checkEnableMultiTouch(engine);
+		gameCtx.dash = new Dashboard(this);
+		gameCtx.engine = configEngine();
+		engine = gameCtx.engine;
+		gameCtx.levelMgr = new LevelManager();
+		gameCtx.cars = new ArrayList<Car>();
+		gameCtx.multiTouch = checkEnableMultiTouch(engine);
 		return engine;
 	}
 
 	@Override
 	public void onLoadResources() {
-		levels.loadLevelsFromAssets(this);
-		currLevel = levels.getLevel(1);
-		for (GameActor actor: currLevel.actors()) {
+// Load level descriptors form json file into GameLevel objects
+		gameCtx.levelMgr.loadLevelsFromAssets(this);
+// Setup currLevel
+		gameCtx.currLevel = gameCtx.levelMgr.getLevel(3);
+// Load resources for all the actors (vehicles and fires and so on)
+		for (ActorModel actor: gameCtx.currLevel.actors()) {
 			RoadmapCar newCar = new RoadmapCar(actor);
 			newCar.loadResources(this, engine);
-			cars.add(newCar);
+			gameCtx.cars.add(newCar);
 		}
+// Load resources for the Decorations (buildings and so on)
+		gameCtx.levelMgr.loadDecorationResources(this, gameCtx);
+// Resources for Dashboard
 		DashTextBox.loadResources(this);
-		GameMapSprite.loadResources(this, engine);
+
+// Resources for the LevelMapSprites.
+		LevelMapSprite.loadResources(this, gameCtx);
 	}
 
 	@Override
 	public Scene onLoadScene() {		
-		scene = new Scene();
-		world = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
-		bkground = new MapBackground(currLevel, scene);
+		gameCtx.scene = new Scene();
+		gameCtx.world = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
+		levelMapShapes = new LevelMapShapes(gameCtx);
 		prepareDashboard();
 		camera.setZoomFactor(INITIAL_ZOOM);
-		configSceneTouchNScroll(scene, multiTouch);
-		bkground.setBackgroundColor(scene);
+		configSceneTouchNScroll(gameCtx.scene, gameCtx.multiTouch);
+		levelMapShapes.setBackgroundColor();
 		
-		TPos center = currLevel.getCenterPos();
+		TPos center = gameCtx.currLevel.getCenterPos();
 		camera.setCenter(center.x, center.y);
-		bkground.createTiledBackground(screenHeight, screenWidth);
-		bkground.createWalls(world);
-		scene.registerUpdateHandler(world);
+		levelMapShapes.createTiledBackground(screenHeight, screenWidth);
+		levelMapShapes.createWalls();
+		levelMapShapes.createDecorations();
+		gameCtx.scene.registerUpdateHandler(gameCtx.world);
 
 		prepareCars();	
 
-		return scene;
+		return gameCtx.scene;
 	}
 
 	/**
 	 * 
 	 */
 	private void prepareDashboard() {
-		dash.createAndAttach(this, scene, camera);
+		gameCtx.dash.createAndAttach(this, gameCtx.scene, camera);
 		messageBox1 = new DashTextBox();
 		messageBox1.createBox(5, 10);
 		messageBox2 = new DashTextBox();
 		messageBox2.createBox(800, 10);
-		dash.addTextBox(messageBox1);
-		dash.addTextBox(messageBox2);
+		gameCtx.dash.addTextBox(messageBox1);
+		gameCtx.dash.addTextBox(messageBox2);
 	}
 
 // Each of the Cars created for this level are attached to the level and started. Also
 // We register the variousu update handlers which will animate the particular Car.
 	private void prepareCars() {
-		for (Car c : cars) {
+		for (Car c : gameCtx.cars) {
 			RoadmapCar rmc = (RoadmapCar) c;
-			rmc.createAndAttach(this, world, scene);
-			rmc.placeOnRoadmap(currLevel);
+			rmc.createAndAttach(this, gameCtx.world, gameCtx.scene);
+			rmc.placeOnRoadmap(gameCtx.currLevel);
 			rmc.start();
-
-			scene.registerUpdateHandler(new TimerHandler(1.0f/10, true, new RoadmapCarBrain(currLevel, rmc)));
-			scene.registerUpdateHandler(new TimerHandler(1.0f/4, true, new CarFollower(rmc, messageBox1)));
+			
+			gameCtx.scene.registerUpdateHandler(new TimerHandler(1.0f/10, true, new RoadmapCarBrain(gameCtx.currLevel, rmc)));
+			gameCtx.scene.registerUpdateHandler(new TimerHandler(1.0f/4, true, new CarFollower(rmc, messageBox1)));
 		}
 	}
 

@@ -5,14 +5,14 @@ import org.anddev.andengine.engine.handler.timer.TimerHandler;
 
 import android.util.Log;
 
-import com.salas.Tile.TDir;
+import com.salas.TileModel.TDir;
 
 public class RoadmapCarBrain implements ITimerCallback {
 
 	RoadmapCar car;
-	GameLevel map;
+	LevelModel map;
 
-	public RoadmapCarBrain(GameLevel theMap, RoadmapCar theCar) {
+	public RoadmapCarBrain(LevelModel theMap, RoadmapCar theCar) {
 		car = theCar;
 		map = theMap;
 	}
@@ -39,7 +39,7 @@ public class RoadmapCarBrain implements ITimerCallback {
 	
 	public void handleIntersection() {
 		TDir curDir = car.getDirection();
-		Tile curTile = car.currTileOnMap();
+		TileModel curTile = car.currTileOnMap();
 		if (curTile.isOpen(curDir.rightTurn())) {
 			Log.v("BRAIN", "Turning right");
 			car.makeTurn(curDir.rightTurn());

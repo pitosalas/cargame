@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.salas.Tile.TDir;
+import com.salas.TileModel.TDir;
 
 import android.content.Context;
 import android.util.Log;
@@ -30,14 +30,14 @@ public class Car {
 
 	private BitmapTextureAtlas carTexture;
 	private TiledTextureRegion carTextureRegion;
-	protected GameActor actor;
+	protected ActorModel actor;
 	protected Body body;
 	protected TiledSprite sprite;
 	
 	public Car() {
 	}
 	
-	public Car(GameActor anActor) {
+	public Car(ActorModel anActor) {
 		actor = anActor;
 	}
 	public Body getBody() {

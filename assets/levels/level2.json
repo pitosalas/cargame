@@ -23,6 +23,6 @@
 				["WR", "NSR", "R", "R", "NSR", "NR", "NSR", "NR", "R", "NSER", "NSWR", "R", "NSR", "NSR", "NSR", "ER"],
 				["EWR", "X", "EWR", "EWR", "X", "EWR", "X", "EWR", "WR", "NSR", "NSR", "R", "NSR", "NR", "NSR", "ER"],
 				["SWR", "NSR", "SR", "SER", "X", "SWR", "NS", "SER", "SWR", "NSR", "NSR", "ESR", "X", "WSR", "NSR", "ESR"]],
-	roadImages: "",
-	parkImages: ""
+	decList: 	[],
+	decPlacement:[]
 }

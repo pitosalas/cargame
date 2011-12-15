@@ -10,6 +10,6 @@
 			  	[ "WER", "WNS", "NS", "NS", "NSE", "EWR" ],
 				[ "WSR", "NSR", "NR", "NSR", "NSR", "ESR" ],
 				[ "WNS", "NES", "WESR", "WNS", "SN", "ESN" ]],
-	roadImages: "",
-	parkImages: ""
+	decList: 	[],
+	decPlacement:[]
 }

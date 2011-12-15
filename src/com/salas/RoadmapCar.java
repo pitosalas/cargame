@@ -5,7 +5,7 @@ import org.anddev.andengine.extension.physics.box2d.util.constants.PhysicsConsta
 import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
-import com.salas.Tile.TDir;
+import com.salas.TileModel.TDir;
 
 public class RoadmapCar extends Car {
 
@@ -13,19 +13,19 @@ public class RoadmapCar extends Car {
 	static int TURNFORCE = 5;
 	static float TURN_EPSILON = 0.1f;
 
-	private GameLevel level;
-	private Tile curTile;
-	private Tile turnTile;
+	private LevelModel level;
+	private TileModel curTile;
+	private TileModel turnTile;
 	private TDir toDirection;
 	private TDir fromDirection;
 	boolean driving;
 	boolean turning;
 	
-	public RoadmapCar(GameActor actor) {
+	public RoadmapCar(ActorModel actor) {
 		super(actor);
 	}
 
-	public void placeOnRoadmap(GameLevel aLevel) {
+	public void placeOnRoadmap(LevelModel aLevel) {
 		level = aLevel;
 		TPos start = actor.getStartingTPos(level);
 		toDirection = actor.getDir();
@@ -47,7 +47,7 @@ public class RoadmapCar extends Car {
 		return turning;
 	}
 	
-	public Tile currTileOnMap() {
+	public TileModel currTileOnMap() {
 		return curTile;
 	}
 	
