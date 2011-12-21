@@ -72,13 +72,14 @@ public class LevelMapShapes {
 // Go through each DecorationModel, locat it's art and a copy of it in a tile for each 'placement' location.
 //
 	public void createDecorations() {
-//		lman.decoAtlas;
-//		lman.decoRegions;
 		for (DecorationModel dm : level.decorations().values()) {
 			// Each decoration is placed in zero or more places
-			for (TPos dp : dm.getPlacements()) {
+			for (PlacementModel pm : dm.getPlacements()) {
 				TextureRegion decoRegion = lman.decoRegionsMap.get(dm.getName());
-				Sprite decoSprite = new Sprite(dp.x, dp.y, dm.getWidth(), dm.getHeight(), decoRegion);
+				TPos spritePos = level.newTposFromCoords(pm.coord.row, pm.coord.col);
+				spritePos.x += pm.xOffset * level.coordScaleFactor;
+				spritePos.y += pm.yOffset * level.coordScaleFactor;
+				Sprite decoSprite = new Sprite(spritePos.x, spritePos.y, dm.getWidth(), dm.getHeight(), decoRegion);
 				scene.attachChild(decoSprite);
 			}
 		}

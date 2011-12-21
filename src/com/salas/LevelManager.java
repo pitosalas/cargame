@@ -42,23 +42,23 @@ public class LevelManager {
 	}
 
     public void loadDecorationResources(CommonActivity activity, GameContext context) {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("tiles/");
-		decoAtlas = new BitmapTextureAtlas(1024, 1024, TextureOptions.DEFAULT);
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		for (int level = 0; level < gameLevels.length; level++) {
 			LevelModel lm = gameLevels[level];
 			for (DecorationModel dm : lm.decorations().values()) {
+				decoAtlas = new BitmapTextureAtlas(512, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 // Create a TextureRegion using the indicated file, and set the origin at the x and y in the file
-// Where we can find the art for the decoration.
+// Where we can find the art for the decoration. Note for now, each file contains one 'decoration' at 0,0.
 				TextureRegion region = 
 						BitmapTextureAtlasTextureRegionFactory.createFromAsset(decoAtlas, 
 																			   activity, 
-																			   "decorations1.png", 
-																			   (int) dm.getPosition().x, 
-																			   (int) dm.getPosition().y);
+																			   dm.getName()+".png", 
+																			   dm.getXPos(), 
+																			   dm.getYPos());
 				decoRegionsMap.put(dm.getName(), region);
+				context.engine.getTextureManager().loadTextures(decoAtlas);
 			}
 		}
-		context.engine.getTextureManager().loadTextures(decoAtlas);
     }
 }
 

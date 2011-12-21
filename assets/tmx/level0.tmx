@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="6" height="6" tilewidth="60" tileheight="60">
+ <tileset firstgid="1" name="Corners" tilewidth="60" tileheight="60">
+  <image source="../gfx/corners0.png" width="360" height="180"/>
+ </tileset>
+ <tileset firstgid="19" name="Decorations" tilewidth="60" tileheight="60">
+  <image source="../gfx/decore0.png" width="360" height="180"/>
+ </tileset>
+ <layer name="Map" width="6" height="6">
+  <data>
+   <tile gid="9"/>
+   <tile gid="11"/>
+   <tile gid="4"/>
+   <tile gid="11"/>
+   <tile gid="11"/>
+   <tile gid="7"/>
+   <tile gid="12"/>
+   <tile gid="17"/>
+   <tile gid="12"/>
+   <tile gid="17"/>
+   <tile gid="29"/>
+   <tile gid="12"/>
+   <tile gid="3"/>
+   <tile gid="11"/>
+   <tile gid="5"/>
+   <tile gid="17"/>
+   <tile gid="35"/>
+   <tile gid="12"/>
+   <tile gid="12"/>
+   <tile gid="17"/>
+   <tile gid="12"/>
+   <tile gid="17"/>
+   <tile gid="29"/>
+   <tile gid="12"/>
+   <tile gid="12"/>
+   <tile gid="17"/>
+   <tile gid="12"/>
+   <tile gid="17"/>
+   <tile gid="35"/>
+   <tile gid="12"/>
+   <tile gid="8"/>
+   <tile gid="11"/>
+   <tile gid="2"/>
+   <tile gid="11"/>
+   <tile gid="11"/>
+   <tile gid="10"/>
+  </data>
+ </layer>
+ <layer name="Stuff" width="6" height="6">
+  <data>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="21"/>
+   <tile gid="0"/>
+   <tile gid="21"/>
+   <tile gid="29"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="19"/>
+   <tile gid="35"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="21"/>
+   <tile gid="0"/>
+   <tile gid="21"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
+ </layer>
+</map>
