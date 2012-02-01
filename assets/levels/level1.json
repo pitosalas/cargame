@@ -13,6 +13,7 @@
 				[ "EWR", "NW",   "NE", "EWR", "NWS", "SE",  "EWR", "NEW"],
 				[ "EWR", "WS",   "ES", "WR",  "NSR","NR",  "ESR", "EW"],
 				[ "SWR", "NSR",  "NSR","ESR", "NSEW","WSER","NWS",  "SE" ] ],
+	tmxFilename: "",
 	decList: 	[],
-	decPlacement:[]
+	decPlacement: []
 }

@@ -4,13 +4,12 @@ import org.anddev.andengine.extension.physics.box2d.util.constants.PhysicsConsta
 
 import android.util.Log;
 
-import com.badlogic.gdx.math.Vector2;
 import com.salas.TileModel.TDir;
 
 public class RoadmapCar extends Car {
 
 	static int VELOCITY = 5;
-	static int TURNFORCE = 5;
+	static int TURNFORCE = 7;
 	static float TURN_EPSILON = 0.1f;
 
 	private LevelModel level;
@@ -123,7 +122,7 @@ public class RoadmapCar extends Car {
 		Log.v("CARTURN", "   cent vec: "+ centVect);
 		
 		// Apply turn force of strength TURNFORCE in the direction of the center of the turn "c"
-		body.applyForce(centVect, body.getWorldCenter());
+		body.applyForce(EntityBox2d.conv(centVect), body.getWorldCenter());
 		if(level.getTile(new TPos(sprite.getX(), sprite.getY())) != turnTile) {
 			// we've left the tile, so the turn is officially over.
 			Log.v("CARTURN", "Turn completed.");

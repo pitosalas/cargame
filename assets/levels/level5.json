@@ -1,0 +1,13 @@
+{
+	level: 6, rows: 8, cols: 8,
+	actors: [
+				{name: "Car1", row: 0, col: 1, dir: west},
+				{name: "Car2", row: 0, col: 4, dir: east}
+			],
+	tmxFilename: "level5.tmx",
+	map: 	[],
+	decList: 	[],
+	decPlacement: []
+}
+
+
