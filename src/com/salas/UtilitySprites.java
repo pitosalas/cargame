@@ -1,8 +1,5 @@
 package com.salas;
 
-import org.anddev.andengine.entity.primitive.Rectangle;
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.shape.Shape;
 import org.anddev.andengine.entity.sprite.TiledSprite;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -13,22 +10,26 @@ public class UtilitySprites {
 	private static BitmapTextureAtlas iconsTexture;
 	protected static TiledTextureRegion iconsTextureRegion;
 	private static final int ICON_SIZE = 32;
-	static private GameContext gameCtx;
+	static private WorldAnd world;
 	private static TiledSprite cursor;
 
-	public static void loadResources(CommonActivity ctx, GameContext gamecontext) {
-		gameCtx = gamecontext;
+	public static void loadResources(CommonActivity ctx, WorldAnd gamecontext) {
+		world = gamecontext;
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		iconsTexture = new BitmapTextureAtlas(128, 128, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		iconsTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(iconsTexture, ctx, "icons.png", 0, 0, 4, 4);
-		gameCtx.engine.getTextureManager().loadTexture(iconsTexture);
+		world.engine.getTextureManager().loadTexture(iconsTexture);
+	}
+	
+	public static void unloadResources() {
+		cursor = null;
 	}
 	
 	public static TiledSprite cursorSprite(float x, float y) {
 		if (cursor == null) {
 			cursor = new TiledSprite(x, y, ICON_SIZE, ICON_SIZE, iconsTextureRegion.deepCopy());
 			cursor.setCurrentTileIndex(0);
-			gameCtx.scene.attachChild(cursor);			
+			((WorldSpritesAnd)world.sprites).scene.attachChild(cursor);			
 		}
 		cursor.setPosition(x, y);
 		return cursor;

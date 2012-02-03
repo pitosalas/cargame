@@ -63,7 +63,7 @@ public class LevelMapSprite extends TiledSprite {
 	}
 
 	// Read the file with the images and load it into memory	
-	public static void loadResources(CommonActivity ctx, GameContext gameCtx) {
+	public static void loadResources(CommonActivity ctx, WorldAnd gameCtx) {
 		roadTilesTextureAtlas = new BitmapTextureAtlas(2048, 1024, TextureOptions.DEFAULT);
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("tiles/");
 		roadTilesTextureRegion = BitmapTextureAtlasTextureRegionFactory

@@ -13,16 +13,16 @@ public class TextBox {
 	static private BitmapTextureAtlas fontTexture;
 	public ChangeableText textBox;
 
-	public static void loadResources(CommonActivity com) {
+	public static void loadResources(WorldAnd world) {
 		fontTexture = new BitmapTextureAtlas(256, 512,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		font = new Font(fontTexture, Typeface.create(Typeface.DEFAULT,
 				Typeface.NORMAL), 16, true, Color.WHITE);
 		
-		com.engine.getTextureManager().loadTexture(fontTexture);
-		com.getFontManager().loadFont(font);
+		world.engine.getTextureManager().loadTexture(fontTexture);
+		world.engine.getFontManager().loadFont(font);
 	}
-
+	
 	public TextBox(int xPos, int yPos) {
 		textBox = new ChangeableText(xPos, yPos, font, "", 60);
 	}

@@ -18,7 +18,7 @@ import android.content.Context;
 // Represents an instantiated GameActor, with the associated Sprite (visual)
 // and Body (Physics) representations.
 //
-public class Car extends GameCar {
+public class Car extends EntitySpriteAnd {
 	private static final int CAR_SIZE = 16;
 	protected ActorModel actor;
 	protected Body body;

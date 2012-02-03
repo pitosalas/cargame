@@ -45,9 +45,6 @@ public abstract class CommonActivity extends BaseGameActivity implements
 	private SurfaceScrollDetector scrollDetector;
 	private PinchZoomDetector pinchDetector;
 
-
-	public Engine engine;
-
 	private float startZoomfactor;
 
 

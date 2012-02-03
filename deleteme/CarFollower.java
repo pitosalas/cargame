@@ -8,10 +8,10 @@ import android.util.Log;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class CarFollower implements ITimerCallback {
-	GameCar car;
+	EntitySpriteAnd car;
 	TextBox box;
 
-	public CarFollower(GameCar theCar, TextBox theBox) {
+	public CarFollower(EntitySpriteAnd theCar, TextBox theBox) {
 		car = theCar;
 		box = theBox;
 	}

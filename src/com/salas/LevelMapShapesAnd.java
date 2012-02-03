@@ -25,21 +25,21 @@ import android.util.Log;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class LevelMapShapes {
+public class LevelMapShapesAnd {
 	
 	private LevelModel level;
 	private Scene scene;
-	private FixedStepPhysicsWorld world;
 	private LevelManager lman;
 	private Engine engine;
+	private FixedStepPhysicsWorld worldBox2d;
 
 	
-	LevelMapShapes(GameContext gcontext) {
-		level = gcontext.currLevel;
-		scene = gcontext.scene;
-		world = gcontext.worldBox2d;
-		lman = gcontext.levelMgr;
-		engine = gcontext.engine;
+	LevelMapShapesAnd(WorldAnd world) {
+		level = world.currLevel;
+		scene = ((WorldSpritesAnd) world.sprites).scene;
+		lman = world.levelMgr;
+		engine = world.engine;
+		worldBox2d = ((WorldBodiesAnd)world.bodies).worldBox2d;
 	}
 	
 	public void createWalls() {
@@ -55,10 +55,10 @@ public class LevelMapShapes {
 
 		// Create the Bodys which give the walls substance
 		final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0.5f, 0.5f);
-		PhysicsFactory.createBoxBody(world, bottomOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(world, topOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(world, leftOuter, BodyType.StaticBody, wallFixtureDef);
-		PhysicsFactory.createBoxBody(world, rightOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(worldBox2d, bottomOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(worldBox2d, topOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(worldBox2d, leftOuter, BodyType.StaticBody, wallFixtureDef);
+		PhysicsFactory.createBoxBody(worldBox2d, rightOuter, BodyType.StaticBody, wallFixtureDef);
 
 		// Attach them to the scene
 		scene.attachChild(bottomOuter);

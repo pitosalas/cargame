@@ -41,7 +41,7 @@ public class LevelManager {
 		return gameLevels[levelnumber];
 	}
 
-    public void loadDecorationResources(CommonActivity activity, GameContext context) {
+    public void loadDecorationResources(CommonActivity activity, WorldAnd context) {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		for (int level = 0; level < gameLevels.length; level++) {
 			LevelModel lm = gameLevels[level];

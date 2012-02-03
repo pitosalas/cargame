@@ -1,12 +1,10 @@
 {
 	level: 6, rows: 3, cols: 3,
 	actors: [
-				{name: "Car1", row: 100.0, col: 100.0, dir: west}
+				{name: "Vehicle", startXPos: 0.5, startYPos: 0.5, startRotation: 0.0 }
 			],
 	tmxFilename: "level6.tmx",
 	map: 	[],
 	decList: 	[],
 	decPlacement: []
 }
-
-

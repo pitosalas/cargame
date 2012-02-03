@@ -122,7 +122,7 @@ public class RoadmapCar extends Car {
 		Log.v("CARTURN", "   cent vec: "+ centVect);
 		
 		// Apply turn force of strength TURNFORCE in the direction of the center of the turn "c"
-		body.applyForce(EntityBox2d.conv(centVect), body.getWorldCenter());
+		body.applyForce(EntityBodyAnd.conv(centVect), body.getWorldCenter());
 		if(level.getTile(new TPos(sprite.getX(), sprite.getY())) != turnTile) {
 			// we've left the tile, so the turn is officially over.
 			Log.v("CARTURN", "Turn completed.");

@@ -1,39 +1,40 @@
 package com.salas;
 
-import org.anddev.andengine.entity.sprite.TiledSprite;
-import org.anddev.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.anddev.andengine.extension.physics.box2d.PhysicsConnector;
 import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
-import org.anddev.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
-
-import android.util.Log;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.salas.TileModel.TDir;
 
-public class EntityBox2d extends Entity {
-	final Body body;
-	final GameContext context;
+public class EntityBodyAnd extends EntityBody {
+	private Body body;
+	final WorldAnd world;
+	final WorldBodiesAnd worldBods;
 	
 	static TweakBox tweakMaxSpeed = new TweakBox("Max Speed", 6.0f, 0.5f);
 	
 	static TweakBox tweakDensity = new TweakBox("Density", 0.2f, 0.2f) {
 		public void apply() { // called when density changes
-			for (SteerableCar car: SteerableCar.allCars) {
-				car.entity().recalcMass();
+			for (VehicleEntity ent : World.vehicles) {
+				ent.body.recalcMass();
 			}
-		}
+			
+		};
 	};
 	
-	public EntityBox2d(TiledSprite sprite, GameContext ctx) {
-		context = ctx;
+	public void createBody(EntitySprite sprite) {
+		EntitySpriteAnd spriteAnd = (EntitySpriteAnd) sprite;
 		final FixtureDef carFixtureDef = PhysicsFactory.createFixtureDef(tweakDensity.getVal(), 0.5f, 0.5f);
-		body = PhysicsFactory.createBoxBody(ctx.worldBox2d, sprite, BodyType.DynamicBody, carFixtureDef);
-		ctx.worldBox2d.registerPhysicsConnector(new PhysicsConnector(sprite, body, true, false));
-		setMaxSpeed(tweakMaxSpeed.getVal());
+		body = PhysicsFactory.createBoxBody(worldBods.worldBox2d, spriteAnd.sprite, BodyType.DynamicBody, carFixtureDef);
+		worldBods.worldBox2d.registerPhysicsConnector(new PhysicsConnector(spriteAnd.sprite, body, true, false));
+		setMaxSpeed(tweakMaxSpeed.getVal());	
+	}
+
+	public EntityBodyAnd(WorldAnd ctx) {
+		world = ctx;
+		worldBods = (WorldBodiesAnd) (world.bodies);
 	}
 
 	@Override
@@ -66,14 +67,14 @@ public class EntityBox2d extends Entity {
 		body.applyLinearImpulse(conv(imp), body.getWorldCenter());
 	}
 
-	@Override
-	void setPosAndRotatation(TPos pos, TDir rot) {
-		Vector2 box2dpos = new Vector2(pos.x, pos.y);
-		Float pixel2meter = new Float(1.0f/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-		Log.i("entity", pixel2meter.toString());
-		body.setTransform(conv(box2dpos.mul(pixel2meter)), rot.toDegrees());		
-	}
-	
+//	@Override
+//	void setPosAndRotatation(TPos pos, TDir rot) {
+//		Vector2 box2dpos = new Vector2(pos.x, pos.y);
+//		Float pixel2meter = new Float(1.0f/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
+//		Log.i("entity", pixel2meter.toString());
+//		body.setTransform(conv(box2dpos.mul(pixel2meter)), rot.toDegrees());		
+//	}
+//	
 	public static com.badlogic.gdx.math.Vector2 conv(Vector2 v) {
 		return new com.badlogic.gdx.math.Vector2(v.x, v.y);
 	}
@@ -99,6 +100,17 @@ public class EntityBox2d extends Entity {
 			e.setDensity(tweakDensity.getVal());
 		}
 		body.resetMassData();
+	}
+
+	@Override
+	void setPos(Vector2 pos) {
+		float angle = body.getAngle();
+		body.setTransform(conv(pos), angle);
+	}
+
+	@Override
+	void setRotation(float angle) {
+		body.setTransform(body.getPosition(), angle);
 	}
 
 }

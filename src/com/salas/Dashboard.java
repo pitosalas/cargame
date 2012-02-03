@@ -43,10 +43,10 @@ public class Dashboard {
 		hudTop.attachChild(statMessage.textBox);
 	}
 		
-	public void addPad(DashTouchPad forcePad) {
-		hudTop.attachChild(forcePad.touchpad);
-	}
-
+//	public void addPad(DashTouchPad forcePad) {
+//		hudTop.attachChild(forcePad.touchpad);
+//	}
+//
 	class TweakBoxInfo {
 		TweakBox tweakbox;
 		TextBox textbox;
