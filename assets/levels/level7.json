@@ -1,0 +1,10 @@
+{
+	level: 7, rows: 3, cols: 3,
+	actors: [
+				{name: "Vehicle", startXPos: 0.5, startYPos: 0.5, startRotation: 0.0 }
+			],
+	tmxFilename: "level7.tmx",
+	map: 	[],
+	decList: 	[],
+	decPlacement: []
+}

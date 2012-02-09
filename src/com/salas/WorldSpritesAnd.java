@@ -10,14 +10,14 @@ import android.util.Log;
 public class WorldSpritesAnd extends WorldSprites {
 
 	public Scene scene;
-	WorldAnd world;
+	World<WorldBodies, WorldSprites> world;
 	Line redVector;
 	Line greenVector;
 	TextBox toolTipA;
 	TextBox toolTipB;
 	
-	WorldSpritesAnd(WorldAnd worldand) {
-		world = worldand;
+	WorldSpritesAnd(World<WorldBodies, WorldSprites> worldA) {
+		world = worldA;
 	}
 	
 	void attach(EntitySprite s) {

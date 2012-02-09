@@ -42,25 +42,25 @@ public class LevelMapSprite extends TiledSprite {
 		// Grass in basic map (only used in early versions)
 //		Grass(0, 5, "TTTT");
 		
-		public TCoord tileCoord;
+//	public TCoord tileCoord;
 		public String coding;
 
 		private static int columns = 6;
 		private static int rows = 3;
 
 		TileImageType(int row, int column, String code) {
-			tileCoord = new TCoord(row, column);
+//			tileCoord = new TCoord(row, column);
 			coding = code;
 		}
 	} 
 
 	// Create a sprite for the indicate Tile on the indicated Roadmap
-	public LevelMapSprite(LevelModel rmap, TileModel tile) {
-		super(rmap.getSpriteTLPos(tile).x, rmap.getSpriteTLPos(tile).y, roadOrParkTextureRegion(tile).deepCopy());
-		TileImageType ttype = getTileTypefromTile(tile); 
-		this.setCurrentTileIndex(ttype.tileCoord.col, ttype.tileCoord.row);
-		Log.v("SPRITE", "RM Sprite "+rmap.getSpriteTLPos(tile)+", type="+ttype.toString());
-	}
+//	public LevelMapSprite(Level rmap, TileModel tile) {
+//		super(rmap.getSpriteTLPos(tile).x, rmap.getSpriteTLPos(tile).y, roadOrParkTextureRegion(tile).deepCopy());
+//		TileImageType ttype = getTileTypefromTile(tile); 
+//		this.setCurrentTileIndex(ttype.tileCoord.col, ttype.tileCoord.row);
+//		Log.v("SPRITE", "RM Sprite "+rmap.getSpriteTLPos(tile)+", type="+ttype.toString());
+//	}
 
 	// Read the file with the images and load it into memory	
 	public static void loadResources(CommonActivity ctx, WorldAnd gameCtx) {

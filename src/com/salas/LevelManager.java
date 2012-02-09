@@ -1,64 +1,105 @@
 package com.salas;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
+import static com.google.common.base.Preconditions.*;
 
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
+import java.util.*;
 
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.util.Log;
+import org.anddev.andengine.engine.*;
+import org.anddev.andengine.entity.layer.tiled.tmx.*;
+import org.anddev.andengine.entity.scene.*;
+import org.anddev.andengine.extension.physics.box2d.util.constants.*;
+
+import android.content.*;
 
 // Manages the descriptors of the levels. Reads them in from json file
 // and returns them as java GameLevel objects. Also manages resources that are needed for the levels.
 public class LevelManager {
-	LevelModel[] gameLevels;
-	BitmapTextureAtlas decoAtlas;
-	HashMap<String, TextureRegion> decoRegionsMap = new HashMap<String, TextureRegion>();
+   
 
-	public void loadLevelsFromAssets(Context c) {
-        AssetManager am = c.getResources().getAssets();
-        String assets[] = null;
-        try {
-            assets = am.list( "levels" );
-            gameLevels = new LevelModel[assets.length];
-            for (int i = 0; i < assets.length; i++) {
-            	InputStream assetStream = am.open("levels/"+assets[i]);
-            	InputStreamReader aFile = new InputStreamReader(assetStream);
-            	gameLevels[i] = LevelModelFactory.constructFromJson(aFile);
-            }
-        } catch( IOException ex ) {
-            Log.e( "CAR", "I/O Exception", ex );
-        }
-    }
-    public LevelModel getLevel(int levelnumber) {
-    	assert levelnumber >= 0 && levelnumber < gameLevels.length;
-		return gameLevels[levelnumber];
-	}
+   private Engine engine;
+   private Context context;
 
-    public void loadDecorationResources(CommonActivity activity, WorldAnd context) {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		for (int level = 0; level < gameLevels.length; level++) {
-			LevelModel lm = gameLevels[level];
-			for (DecorationModel dm : lm.decorations().values()) {
-				decoAtlas = new BitmapTextureAtlas(512, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-// Create a TextureRegion using the indicated file, and set the origin at the x and y in the file
-// Where we can find the art for the decoration. Note for now, each file contains one 'decoration' at 0,0.
-				TextureRegion region = 
-						BitmapTextureAtlasTextureRegionFactory.createFromAsset(decoAtlas, 
-																			   activity, 
-																			   dm.getName()+".png", 
-																			   dm.getXPos(), 
-																			   dm.getYPos());
-				decoRegionsMap.put(dm.getName(), region);
-				context.engine.getTextureManager().loadTextures(decoAtlas);
-			}
-		}
-    }
+   private String current = null;
+   private HashMap<String, Level> gameLevels;
+   private HashMap<String, TMXManager> fileManagers;
+
+   LevelManager(Engine e, Context c) {
+      engine = e;
+      context = c;
+      gameLevels = new HashMap<String, Level>();
+      fileManagers = new HashMap<String, TMXManager>();
+   }
+
+   void setCurrentLevel(String s) {
+      current = s;
+   }
+
+   // If we've not read this file before, read it and store the TMX structure.
+   void loadLevelFromDisk() {
+      checkNotNull(current);
+      if (fileManagers.get(current) == null) {
+         TMXManager tmx = new TMXManager(context, engine);
+         tmx.processTMXFile(current);
+         fileManagers.put(current, tmx);
+      }
+   }
+
+   void attachTiles(Scene s) {
+      loadLevelFromDisk();
+      fileManagers.get(current).arttachTiles(s);
+   }
+
+   public void prepareVehciles(final WorldAnd world) {
+      loadLevelFromDisk();
+      fileManagers.get(current).processVehicleObjects(
+            new TMXManager.VehicleTMXListener() {
+
+               @Override
+               public void vehicleAdd(String name, int startPixX,
+                     int startPixY, float startRotation) {
+                  float posX = startPixX / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+                  float posY = startPixY / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+                  VehicleEntity newVehicle = new VehicleEntity(world, new EntityBodyAnd(world), new EntitySpriteAnd());
+                  newVehicle.sprite.loadResources(world);
+                  newVehicle.setName(name);
+                  newVehicle.setStartingPos(posX, posY);
+                  newVehicle.setStartingRotation(startRotation);
+               }
+            });
+   }
+
+   public Level prepareLevel() {
+      loadLevelFromDisk();
+      final Level level = new Level();
+      fileManagers.get(current).processNodesObjects(
+            new TMXManager.NodesTMXListener() {
+
+               @Override
+               public void nodeAdd(String name, int startPixX, int startPixY) {
+                  float posX = startPixX / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+                  float posY = startPixY / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+
+                  level.addNode(name, posX, posY);
+               }
+            });
+      gameLevels.put(current,  level);
+      return level;
+   }
+
+   public int getMapHeightInPixels() {
+      loadLevelFromDisk();
+      TMXTiledMap tilemap = checkNotNull(fileManagers.get(current).tmxTiledMap);
+      return tilemap.getTileRows() * tilemap.getTileHeight();
+   }   
+  
+   public int getMapWidthInPixels() {
+      loadLevelFromDisk();
+      TMXTiledMap tilemap = checkNotNull(fileManagers.get(current).tmxTiledMap);
+      return tilemap.getTileColumns() * tilemap.getTileWidth();
+   }
+
+   public Vector2 getCenterPos() {
+      return new Vector2(getMapWidthInPixels()/2.0f, getMapHeightInPixels()/2.0f);
+   }   
+
 }
-

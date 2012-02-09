@@ -67,14 +67,6 @@ public class EntityBodyAnd extends EntityBody {
 		body.applyLinearImpulse(conv(imp), body.getWorldCenter());
 	}
 
-//	@Override
-//	void setPosAndRotatation(TPos pos, TDir rot) {
-//		Vector2 box2dpos = new Vector2(pos.x, pos.y);
-//		Float pixel2meter = new Float(1.0f/PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
-//		Log.i("entity", pixel2meter.toString());
-//		body.setTransform(conv(box2dpos.mul(pixel2meter)), rot.toDegrees());		
-//	}
-//	
 	public static com.badlogic.gdx.math.Vector2 conv(Vector2 v) {
 		return new com.badlogic.gdx.math.Vector2(v.x, v.y);
 	}

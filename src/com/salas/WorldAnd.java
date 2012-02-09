@@ -5,12 +5,11 @@ import org.anddev.andengine.engine.handler.timer.TimerHandler;
 
 import android.content.Context;
 
-public class WorldAnd extends World {
+public class WorldAnd extends World<WorldBodies, WorldSprites> {
 	public Dashboard dash;
 	public Engine engine;
 	public LevelManager levelMgr;
 	public boolean multiTouch;
-	public LevelModel currLevel;
 	public Context aeCtx;
 
 	@Override
@@ -19,9 +18,9 @@ public class WorldAnd extends World {
 		wsa.scene.registerUpdateHandler(((WorldBodiesAnd)bodies).worldBox2d);
 	}
 
-	public void registerUpdateHandler(float secondInterv, VehicleUpdateHandler handler) {
+	public void registerUpdateHandler(float secondInterv, VehicleUpdateHandler handlr) {
 		WorldSpritesAnd s = (WorldSpritesAnd) sprites;
-		VehicleUpdateHandlerAnd handlerAnd = (VehicleUpdateHandlerAnd) handler;
+		VehicleUpdateHandlerAnd handlerAnd = (VehicleUpdateHandlerAnd) handlr;
 		s.scene.registerUpdateHandler(new TimerHandler(secondInterv, true, handlerAnd));
 	}
 
@@ -31,7 +30,7 @@ public class WorldAnd extends World {
 	}
 	
 	@Override
-	VehicleUpdateHandler createVehicleUpdateHandler(VehicleEntity v) {
-		return new VehicleUpdateHandlerAnd(v, this);		
+	VehicleUpdateHandlerAnd createVehicleUpdateHandler(VehicleEntity v) {
+		return new VehicleUpdateHandlerAnd(v);		
 	}
 }

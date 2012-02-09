@@ -27,7 +27,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class LevelMapShapesAnd {
 	
-	private LevelModel level;
 	private Scene scene;
 	private LevelManager lman;
 	private Engine engine;
@@ -35,7 +34,6 @@ public class LevelMapShapesAnd {
 
 	
 	LevelMapShapesAnd(WorldAnd world) {
-		level = world.currLevel;
 		scene = ((WorldSpritesAnd) world.sprites).scene;
 		lman = world.levelMgr;
 		engine = world.engine;
@@ -44,8 +42,8 @@ public class LevelMapShapesAnd {
 	
 	public void createWalls() {
 		
-		float height = level.getBottomRightPos().y;
-		float width = level.getBottomRightPos().x;
+		int height = lman.getMapHeightInPixels();
+		int width = lman.getMapWidthInPixels();
 		
 		// Create the shapes forming each of the walls
 		final Shape bottomOuter = new Rectangle(0, height - 2, width, 2);
@@ -67,77 +65,7 @@ public class LevelMapShapesAnd {
 		scene.attachChild(rightOuter);
 	}
 
-	public void createTiledBackground() {
-		int columns = level.gridColumns;
-			int rows = level.gridRows;
-			for (int row = 0; row < rows; row ++) {
-				for (int col=0; col < columns; col ++) {
-					TileModel tile = level.getTile(new TCoord(row, col));
-					LevelMapSprite tileSprite = new LevelMapSprite(level, tile);
-					scene.attachChild(tileSprite);
-				}
-			}
-		}
-
 	public void setBackgroundColor() {
 		scene.setBackground(new ColorBackground(0, 0.5f, 0));		
-	}
-
-//
-// A decoration is a bit of art that augments the level's display. 
-// Go through each DecorationModel, locat it's art and a copy of it in a tile for each 'placement' location.
-//
-	public void createDecorations() {
-		for (DecorationModel dm : level.decorations().values()) {
-			// Each decoration is placed in zero or more places
-			for (PlacementModel pm : dm.getPlacements()) {
-				TextureRegion decoRegion = lman.decoRegionsMap.get(dm.getName());
-				TPos spritePos = level.newTposFromCoords(pm.coord.row, pm.coord.col);
-				spritePos.x += pm.xOffset * level.coordScaleFactor;
-				spritePos.y += pm.yOffset * level.coordScaleFactor;
-				Sprite decoSprite = new Sprite(spritePos.x, spritePos.y, dm.getWidth(), dm.getHeight(), decoRegion);
-				scene.attachChild(decoSprite);
-			}
-		}
-	}
-	
-
-/**
- * Create the level sprites using an optional filename level.tmxFilename.
- *  
- * A TMX file is created with the tool Tiled (although other tools exist) and
- * describes both the graphic files that represent the level as well as meta data for tiles. The assumped format is that 
- * there are two layers defined in the tmx file. One layer is for non-map graphics, and the other layer has the images
- * which denote the roads over which the vehicles travel. The tiles in the latter layer each have a single property called "map"
- * whose value is one or more of NSEW, indicating for that tile, which directions are blocked. The method reads in the TMX file
- * and catches all the tiles with the "map" property and use them to assemble the map tiles
- * @param carGameActivity
- */
-	public void createTMXTiles(CarGameActivity carGameActivity) {
-		TMXTiledMap tmxTiledMap = null;
-		try {
-			final TMXLoader tmxLoader = new TMXLoader(carGameActivity, 
-													  engine.getTextureManager(), 
-													  TextureOptions.BILINEAR_PREMULTIPLYALPHA, 
-													  new ITMXTilePropertiesListener() {
-				@Override
-				public void onTMXTileWithPropertiesCreated(final TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
-					if(pTMXTileProperties.get(0).getName().equalsIgnoreCase("map"))
-					{
-						int row = pTMXTile.getTileRow();
-						int col =  pTMXTile.getTileColumn();
-						String spec = pTMXTileProperties.get(0).getValue();
-						LevelModelFactory.tileFromSpecString(level, row, col, spec);
-					}
-				}
-			});
-			tmxTiledMap = tmxLoader.loadFromAsset(carGameActivity, level.tmxFileName);
-		} catch (final TMXLoadException tmxle) {
-			Debug.e(tmxle);
-		}
-// Attach each layer defined in the tmx file
-		for (TMXLayer t : tmxTiledMap.getTMXLayers()) {
-			scene.attachChild(t);
-		}
 	}
 }

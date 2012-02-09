@@ -7,8 +7,6 @@ import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
 
-import com.salas.TileModel.TDir;
-
 public class EntitySpriteAnd extends EntitySprite {
 	private BitmapTextureAtlas carTexture;
 	protected TiledTextureRegion carTextureRegion;
@@ -32,11 +30,6 @@ public class EntitySpriteAnd extends EntitySprite {
 	
 	TiledSprite spriteAnd() {
 		return sprite;
-	}
-	
-	public void setPosAndRotation(TPos pos, TDir rot) {
-		sprite.setPosition(pos.x, pos.y);
-		sprite.setRotation(rot.toDegrees());
 	}
 	
 	@Override
