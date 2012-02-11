@@ -9,13 +9,14 @@ import org.anddev.andengine.entity.layer.tiled.tmx.*;
 import org.anddev.andengine.entity.scene.*;
 import org.anddev.andengine.extension.physics.box2d.util.constants.*;
 
+import com.salas.TMXManager.EdgesTMXListener;
+
 import android.content.*;
 
 // Manages the descriptors of the levels. Reads them in from json file
 // and returns them as java GameLevel objects. Also manages resources that are needed for the levels.
 public class LevelManager {
    
-
    private Engine engine;
    private Context context;
 
@@ -33,6 +34,11 @@ public class LevelManager {
    void setCurrentLevel(String s) {
       current = s;
    }
+   
+   public Level getCurrentLevel() {
+      checkNotNull(current);
+      return gameLevels.get(current);
+   }
 
    // If we've not read this file before, read it and store the TMX structure.
    void loadLevelFromDisk() {
@@ -41,6 +47,7 @@ public class LevelManager {
          TMXManager tmx = new TMXManager(context, engine);
          tmx.processTMXFile(current);
          fileManagers.put(current, tmx);
+         gameLevels.put(current, new Level());
       }
    }
 
@@ -49,7 +56,7 @@ public class LevelManager {
       fileManagers.get(current).arttachTiles(s);
    }
 
-   public void prepareVehciles(final WorldAnd world) {
+   public void prepareVehicles(final WorldAnd world) {
       loadLevelFromDisk();
       fileManagers.get(current).processVehicleObjects(
             new TMXManager.VehicleTMXListener() {
@@ -68,22 +75,24 @@ public class LevelManager {
             });
    }
 
-   public Level prepareLevel() {
+   public void prepareRoads() {
       loadLevelFromDisk();
-      final Level level = new Level();
+      final Level level = gameLevels.get(current);
       fileManagers.get(current).processNodesObjects(
             new TMXManager.NodesTMXListener() {
-
                @Override
                public void nodeAdd(String name, int startPixX, int startPixY) {
                   float posX = startPixX / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
                   float posY = startPixY / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
-
-                  level.addNode(name, posX, posY);
+                  level.addIntersection(name, posX, posY);
+               }
+            }, 
+            new EdgesTMXListener() {
+               @Override
+               public void edgeAdd(String edgeName, String sourceNode, String destNode) {
+                  level.addRoad(edgeName, sourceNode, destNode);
                }
             });
-      gameLevels.put(current,  level);
-      return level;
    }
 
    public int getMapHeightInPixels() {

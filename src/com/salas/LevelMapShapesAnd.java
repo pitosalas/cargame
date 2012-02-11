@@ -1,42 +1,24 @@
 package com.salas;
 
-import org.anddev.andengine.engine.Engine;
-import org.anddev.andengine.entity.layer.tiled.tmx.TMXLayer;
-import org.anddev.andengine.entity.layer.tiled.tmx.TMXLoader;
-import org.anddev.andengine.entity.layer.tiled.tmx.TMXProperties;
-import org.anddev.andengine.entity.layer.tiled.tmx.TMXTile;
-import org.anddev.andengine.entity.layer.tiled.tmx.TMXTileProperty;
-import org.anddev.andengine.entity.layer.tiled.tmx.TMXTiledMap;
-import org.anddev.andengine.entity.layer.tiled.tmx.TMXLoader.ITMXTilePropertiesListener;
-import org.anddev.andengine.entity.layer.tiled.tmx.util.exception.TMXLoadException;
-import org.anddev.andengine.entity.primitive.Rectangle;
-import org.anddev.andengine.entity.scene.Scene;
-import org.anddev.andengine.entity.scene.background.ColorBackground;
+import org.anddev.andengine.entity.primitive.*;
+import org.anddev.andengine.entity.scene.*;
+import org.anddev.andengine.entity.scene.background.*;
 import org.anddev.andengine.entity.shape.Shape;
-import org.anddev.andengine.entity.sprite.Sprite;
-import org.anddev.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
-import org.anddev.andengine.extension.physics.box2d.PhysicsFactory;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.region.TextureRegion;
-import org.anddev.andengine.util.Debug;
+import org.anddev.andengine.extension.physics.box2d.*;
 
-import android.util.Log;
-
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.*;
 
 public class LevelMapShapesAnd {
 	
 	private Scene scene;
 	private LevelManager lman;
-	private Engine engine;
 	private FixedStepPhysicsWorld worldBox2d;
 
 	
 	LevelMapShapesAnd(WorldAnd world) {
 		scene = ((WorldSpritesAnd) world.sprites).scene;
 		lman = world.levelMgr;
-		engine = world.engine;
 		worldBox2d = ((WorldBodiesAnd)world.bodies).worldBox2d;
 	}
 	

@@ -61,8 +61,8 @@ public class CarGameActivity extends CommonActivity {
 		
       LevelManager l = worldA.levelMgr;
       l.attachTiles(scene);
-      l.prepareVehciles(worldA);
-      l.prepareLevel();
+      l.prepareVehicles(worldA);
+      l.prepareRoads();
 		
 		levelMapShapes = new LevelMapShapesAnd(worldA);
 		worldA.dash.createAndAttach(this, wsa.scene, camera);
@@ -78,6 +78,7 @@ public class CarGameActivity extends CommonActivity {
 		
 		worldA.launchVehicles();
 		worldA.dash.addTweakboxes();
+		worldA.sprites.showRoadGraph(l.getCurrentLevel());
 		return scene;
 	}
 

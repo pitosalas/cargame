@@ -1,44 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="3" height="3" tilewidth="300" tileheight="300">
- <tileset firstgid="1" source="deco300.tsx"/>
- <tileset firstgid="19" source="corners300.tsx"/>
- <tileset firstgid="37" source="paths300.tsx"/>
- <layer name="Tiles" width="3" height="3">
-  <data>
-   <tile gid="27"/>
-   <tile gid="29"/>
-   <tile gid="25"/>
-   <tile gid="30"/>
-   <tile gid="35"/>
-   <tile gid="30"/>
-   <tile gid="26"/>
-   <tile gid="29"/>
-   <tile gid="28"/>
-  </data>
- </layer>
- <objectgroup name="Nodes" width="3" height="3">
-  <properties>
-   <property name="path" value="1"/>
-   <property name="type" value="closed"/>
-  </properties>
-  <object type="begin" x="205" y="153"/>
-  <object x="433" y="148"/>
-  <object x="720" y="172"/>
-  <object x="752" y="245"/>
-  <object x="752" y="437"/>
-  <object x="747" y="653"/>
-  <object x="713" y="725"/>
-  <object x="457" y="749"/>
-  <object x="207" y="744"/>
-  <object x="148" y="664"/>
-  <object x="153" y="431"/>
-  <object type="end" x="155" y="219"/>
- </objectgroup>
- <objectgroup name="vehicles" width="3" height="3">
-  <object name="Car OneTwo" type="car" x="740" y="534" width="55" height="16">
-   <properties>
-    <property name="Rotation" value="0.0"/>
-   </properties>
-  </object>
- </objectgroup>
+  <tileset firstgid="1" source="deco300.tsx"/>
+  <tileset firstgid="19" source="corners300.tsx"/>
+  <tileset firstgid="37" source="paths300.tsx"/>
+  <layer name="Tiles" width="3" height="3">
+    <data>
+      <tile gid="27"/>
+      <tile gid="29"/>
+      <tile gid="25"/>
+      <tile gid="30"/>
+      <tile gid="35"/>
+      <tile gid="30"/>
+      <tile gid="26"/>
+      <tile gid="29"/>
+      <tile gid="28"/>
+    </data>
+  </layer>
+  <objectgroup name="Nodes" width="3" height="3">
+    <object name="One" x="496" y="150">
+      <properties>
+        <property name="edge1" value="Two"/>
+      </properties>
+    </object>
+    <object name="Two" x="720" y="172">
+      <properties>
+        <property name="edge1" value="One"/>
+        <property name="edge2" value="Three"/>
+      </properties>
+    </object>
+    <object name="Three" x="752" y="245">
+      <properties>
+        <property name="edge3" value="Two"/>
+        <property name="edge4" value="Node1"/>
+      </properties>
+    </object>
+    <object name="node1" x="752" y="437">
+      <properties>
+        <property name="edge5" value="three"/>
+        <property name="edge6" value="node2"/>
+      </properties>
+    </object>
+    <object name="node2" x="747" y="653">
+      <properties>
+        <property name="edge7" value="node1"/>
+        <property name="edge8" value="node3"/>
+      </properties>
+    </object>
+    <object name="node3" x="713" y="725">
+      <properties>
+        <property name="edge9" value="node2"/>
+        <property name="edge10" value="node4"/>
+      </properties>
+    </object>
+    <object name="node4" x="457" y="749">
+      <properties>
+        <property name="edge11" value="node3"/>
+        <property name="edge12" value="node5"/>
+      </properties>
+    </object>
+    <object name="node5" x="207" y="744">
+      <properties>
+        <property name="edge13" value="node4"/>
+        <property name="edge14" value="node6"/>
+      </properties>
+    </object>
+    <object name="node6" x="148" y="664">
+      <properties>
+        <property name="edge15" value="node5"/>
+        <property name="edge16" value="node7"/>
+      </properties>
+    </object>
+    <object name="node7" x="153" y="431">
+      <properties>
+        <property name="edge17" value="node6"/>
+        <property name="edge28" value="node8"/>
+      </properties>
+    </object>
+    <object name="node8" x="155" y="219">
+      <properties>
+        <property name="edge19" value="node7"/>
+        <property name="edge29" value="node9"/>
+      </properties>
+    </object>
+    <object name="node9" x="207" y="152">
+      <properties>
+        <property name="edge30" value="node8"/>
+        <property name="edge40" value="one"/>
+      </properties>
+    </object>
+  </objectgroup>
+  <objectgroup name="vehicles" width="3" height="3">
+    <object name="Car OneTwo" type="car" x="740" y="534" width="55" height="16">
+      <properties>
+        <property name="Rotation" value="0.0"/>
+      </properties>
+    </object>
+  </objectgroup>
+  <objectgroup name="edges" width="3" height="3"/>
 </map>

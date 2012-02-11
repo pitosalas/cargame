@@ -1,11 +1,10 @@
 package com.salas;
 
 
-import org.anddev.andengine.entity.sprite.TiledSprite;
-import org.anddev.andengine.opengl.texture.TextureOptions;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.anddev.andengine.opengl.texture.region.TiledTextureRegion;
+import org.anddev.andengine.entity.sprite.*;
+import org.anddev.andengine.opengl.texture.*;
+import org.anddev.andengine.opengl.texture.atlas.bitmap.*;
+import org.anddev.andengine.opengl.texture.region.*;
 
 public class EntitySpriteAnd extends EntitySprite {
 	private BitmapTextureAtlas carTexture;
@@ -15,7 +14,7 @@ public class EntitySpriteAnd extends EntitySprite {
 	private static final int CAR_HEIGHT = 32;
 
 	@Override
-	public void loadResources(World modCtx) {
+	public void loadResources(World<WorldBodies, WorldSprites> modCtx) {
 		WorldAnd ctx = (WorldAnd) modCtx;
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		carTexture = new BitmapTextureAtlas(128, 128, TextureOptions.BILINEAR_PREMULTIPLYALPHA);

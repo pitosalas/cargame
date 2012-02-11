@@ -1,8 +1,16 @@
 package com.salas;
 
+import static com.google.common.base.Preconditions.*;
+
+import java.util.*;
+
 import org.anddev.andengine.entity.primitive.Line;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
+
+import com.salas.Level.IntersectionHandler;
+import com.salas.Level.RoadLoopHandler;
+
 import android.util.Log;
 
 
@@ -10,20 +18,21 @@ import android.util.Log;
 public class WorldSpritesAnd extends WorldSprites {
 
 	public Scene scene;
-	World<WorldBodies, WorldSprites> world;
+	WorldAnd world;
 	Line redVector;
 	Line greenVector;
 	TextBox toolTipA;
 	TextBox toolTipB;
+	private HashMap<String, Line>lines = new HashMap<String, Line>();
+
 	
-	WorldSpritesAnd(World<WorldBodies, WorldSprites> worldA) {
+	WorldSpritesAnd(WorldAnd worldA) {
 		world = worldA;
 	}
 	
 	void attach(EntitySprite s) {
 		scene.attachChild(((EntitySpriteAnd)s).spriteAnd());
 	}
-
 
 	@Override
 	void showCursorAt(Vector2 loc) {
@@ -63,19 +72,38 @@ public class WorldSpritesAnd extends WorldSprites {
 		final Vector2 endpoint = box2d2PixelCoordinate(vector).add(startpoint);
 		greenVector.setPosition(startpoint.x, startpoint.y, endpoint.x, endpoint.y);
 	}
-	@Override
-	void showPath(Path apath) {
-		for (Vector2 wpoint : apath.waypoints) {
-			showCursorAt(wpoint);
-		}
+	
+   @Override
+	void showRoadGraph(Level level) {
+	   level.loopOverAllIntersections(new IntersectionHandler() {         
+         @Override
+         public void intersection(String name, Vector2 position) {
+            UtilitySprites.setCursorSprite(name, box2d2PixelCoordinate(position)); 
+         }
+      });
+	   level.loopOverAllRoads(new RoadLoopHandler() {
+         @Override public void road(String name, Vector2 fromVector, Vector2 toVector) {
+            setLineSprite(name, fromVector, toVector);
+         }
+      });
 	}
 
-	@Override
-	void log(String string) {
-		Log.i("world", string);
-	}
+	public void setLineSprite(String name, Vector2 start, Vector2 end) {
+      Line newline;
+      checkNotNull(name);
+      if ((newline = lines.get(name)) == null) {
+         newline = new Line(0, 0, 0, 0, 2.0f);
+         newline.setColor(new Random().nextFloat(), new Random().nextFloat(), new Random().nextFloat());
+         ((WorldSpritesAnd) world.sprites).scene.attachChild(newline);
+         lines.put(name, newline);
+      } else {
+         final Vector2 startpoint = box2d2PixelCoordinate(start);
+         final Vector2 endpoint = box2d2PixelCoordinate(end);
+         newline.setPosition(startpoint.x, startpoint.y, endpoint.x, endpoint.y);
+      }
+   }
 
-	@Override
+   @Override
 	void showTooltipA(float x, float y, String text) {
 		Vector2 pixelWhere = box2d2PixelCoordinate(new Vector2(x,y));
 		if (toolTipA == null) {
@@ -97,5 +125,10 @@ public class WorldSpritesAnd extends WorldSprites {
 		toolTipB.textBox.setColor(0.0f, 1.0f, 1.0f);
 		toolTipB.textBox.setText(text);
 	}
+
+   @Override
+   void log(String string) {
+   	Log.i("world", string);
+   }
 	
 }

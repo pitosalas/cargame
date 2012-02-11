@@ -63,14 +63,17 @@ public class TMXManager {
       }
    }
 
-   void processNodesObjects(NodesTMXListener handler) {
+   void processNodesObjects(NodesTMXListener nodeHandler, EdgesTMXListener edgesHandler) {
       for (TMXObjectGroup oGroup : tmxTiledMap.getTMXObjectGroups()) {
          if (oGroup.getName().equalsIgnoreCase("nodes")) {
             for (TMXObject nodeObject : oGroup.getTMXObjects()) {
                String name = nodeObject.getName();
                int startPixX = nodeObject.getX();
                int startPixY = nodeObject.getY();
-               handler.nodeAdd(name, startPixX, startPixY);
+               nodeHandler.nodeAdd(name, startPixX, startPixY);
+               for (TMXObjectProperty prop: nodeObject.getTMXObjectProperties()) {
+                  edgesHandler.edgeAdd(prop.getName(), name, prop.getValue());
+               }
 
             }
          }
@@ -85,5 +88,11 @@ public class TMXManager {
    public interface NodesTMXListener {
       void nodeAdd(String name, int startPixX, int startPixY);
    }
+   
+   public interface EdgesTMXListener {
+      void edgeAdd(String edgeName, String sourceNode, String destNode);
+   }
+
+
 
 }
