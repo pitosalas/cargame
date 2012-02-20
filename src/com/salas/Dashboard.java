@@ -1,9 +1,6 @@
 package com.salas;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.anddev.andengine.engine.camera.ZoomCamera;
 import org.anddev.andengine.engine.camera.hud.HUD;
@@ -43,10 +40,6 @@ public class Dashboard {
 		hudTop.attachChild(statMessage.textBox);
 	}
 		
-//	public void addPad(DashTouchPad forcePad) {
-//		hudTop.attachChild(forcePad.touchpad);
-//	}
-//
 	class TweakBoxInfo {
 		TweakBox tweakbox;
 		TextBox textbox;

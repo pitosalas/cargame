@@ -6,6 +6,9 @@ import org.anddev.andengine.opengl.texture.*;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.*;
 import org.anddev.andengine.opengl.texture.region.*;
 
+import com.salas.entity.*;
+import com.salas.world.*;
+
 public class EntitySpriteAnd extends EntitySprite {
 	private BitmapTextureAtlas carTexture;
 	protected TiledTextureRegion carTextureRegion;

@@ -12,13 +12,13 @@ import com.badlogic.gdx.physics.box2d.*;
 public class LevelMapShapesAnd {
 	
 	private Scene scene;
-	private LevelManager lman;
+	private LevelManagerAnd lman;
 	private FixedStepPhysicsWorld worldBox2d;
 
 	
 	LevelMapShapesAnd(WorldAnd world) {
 		scene = ((WorldSpritesAnd) world.sprites).scene;
-		lman = world.levelMgr;
+		lman = (LevelManagerAnd) world.levelMgr;
 		worldBox2d = ((WorldBodiesAnd)world.bodies).worldBox2d;
 	}
 	

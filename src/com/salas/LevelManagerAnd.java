@@ -10,34 +10,22 @@ import org.anddev.andengine.entity.scene.*;
 import org.anddev.andengine.extension.physics.box2d.util.constants.*;
 
 import com.salas.TMXManager.EdgesTMXListener;
+import com.salas.vehicle.*;
 
 import android.content.*;
 
 // Manages the descriptors of the levels. Reads them in from json file
 // and returns them as java GameLevel objects. Also manages resources that are needed for the levels.
-public class LevelManager {
+public class LevelManagerAnd extends LevelManager{
    
    private Engine engine;
    private Context context;
-
-   private String current = null;
-   private HashMap<String, Level> gameLevels;
    private HashMap<String, TMXManager> fileManagers;
 
-   LevelManager(Engine e, Context c) {
+   LevelManagerAnd(Engine e, Context c) {
       engine = e;
       context = c;
-      gameLevels = new HashMap<String, Level>();
       fileManagers = new HashMap<String, TMXManager>();
-   }
-
-   void setCurrentLevel(String s) {
-      current = s;
-   }
-   
-   public Level getCurrentLevel() {
-      checkNotNull(current);
-      return gameLevels.get(current);
    }
 
    // If we've not read this file before, read it and store the TMX structure.
@@ -67,6 +55,7 @@ public class LevelManager {
                   float posX = startPixX / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
                   float posY = startPixY / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
                   VehicleEntity newVehicle = new VehicleEntity(world, new EntityBodyAnd(world), new EntitySpriteAnd());
+                  world.department.vehicles.registerEntity(newVehicle);
                   newVehicle.sprite.loadResources(world);
                   newVehicle.setName(name);
                   newVehicle.setStartingPos(posX, posY);

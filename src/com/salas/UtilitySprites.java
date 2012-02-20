@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.*;
 
 import java.util.*;
 
-import org.anddev.andengine.entity.primitive.*;
 import org.anddev.andengine.entity.sprite.TiledSprite;
 import org.anddev.andengine.opengl.texture.TextureOptions;
 import org.anddev.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -30,20 +29,6 @@ public class UtilitySprites {
 	
 	public static void unloadResources() {
 		cursor = null;
-	}
-	
-	public static TiledSprite cursorSprite(float x, float y) {
-		if (cursor == null) {
-			cursor = new TiledSprite(x, y, ICON_SIZE, ICON_SIZE, iconsTextureRegion.deepCopy());
-			cursor.setCurrentTileIndex(0);
-			((WorldSpritesAnd)world.sprites).scene.attachChild(cursor);			
-		}
-		cursor.setPosition(x, y);
-		return cursor;
-	}
-	
-	public static TiledSprite cursorSprite(Vector2 pos) {
-		return cursorSprite(pos.x, pos.y);
 	}
 	
 	public static void setCursorSprite(String name, Vector2 position) {

@@ -5,6 +5,8 @@ import org.anddev.andengine.engine.Engine;
 import org.anddev.andengine.entity.scene.Scene;
 import org.anddev.andengine.entity.util.FPSLogger;
 
+import com.salas.department.*;
+
 import android.util.Log;
 
 
@@ -13,19 +15,20 @@ public class CarGameActivity extends CommonActivity {
 	private LevelMapShapesAnd levelMapShapes;
 	private WorldAnd worldA;
 	
-	private static float INITIAL_ZOOM = 0.8f;
+	private static float INITIAL_ZOOM = 0.4f;
 
 	@Override
 	public Engine onLoadEngine() {
 			
-		worldA = new WorldAnd();
+		worldA = WorldAnd.singleton();
 		configScreenInfo();
 		configCamera();
 		worldA.sprites = new WorldSpritesAnd(worldA);
 		worldA.bodies = new WorldBodiesAnd();
 		worldA.dash = new Dashboard(this);
 		worldA.engine = configEngine();
-		worldA.levelMgr = new LevelManager(worldA.engine, this);
+		worldA.department = new DepartmentEntity(worldA);
+		worldA.levelMgr = new LevelManagerAnd(worldA.engine, this);
 		worldA.multiTouch = checkEnableMultiTouch(worldA.engine);
 		worldA.aeCtx = this;
 		
@@ -36,8 +39,8 @@ public class CarGameActivity extends CommonActivity {
 	public void onLoadResources() {
 		Log.i("GAME", "onLoadResources");
 		
-		LevelManager l = worldA.levelMgr;
-		l.setCurrentLevel("level7.tmx");
+		LevelManagerAnd l = (LevelManagerAnd) worldA.levelMgr;
+		l.setCurrentLevel("level8.tmx");
 		l.loadLevelFromDisk();
 
 		// Resources for Dashboard
@@ -59,7 +62,7 @@ public class CarGameActivity extends CommonActivity {
 		WorldBodiesAnd wba = (WorldBodiesAnd) worldA.bodies;
       wba.initPhysics();
 		
-      LevelManager l = worldA.levelMgr;
+      LevelManagerAnd l = (LevelManagerAnd) worldA.levelMgr;
       l.attachTiles(scene);
       l.prepareVehicles(worldA);
       l.prepareRoads();
@@ -69,16 +72,17 @@ public class CarGameActivity extends CommonActivity {
 		camera.setZoomFactor(INITIAL_ZOOM);
 		configSceneTouchNScroll(wsa.scene, worldA.multiTouch);
 		
-		Vector2 center = worldA.levelMgr.getCenterPos();
+		Vector2 center = l.getCenterPos();
 		camera.setCenter(center.x, center.y);
 		
 		levelMapShapes.createWalls();
       levelMapShapes.setBackgroundColor();
-		worldA.registerUpdateHandler(worldA.bodies);
+//		worldA.registerUpdateHandler(worldA.bodies);
 		
 		worldA.launchVehicles();
 		worldA.dash.addTweakboxes();
-		worldA.sprites.showRoadGraph(l.getCurrentLevel());
+//		worldA.sprites.showRoadGraph(l.getCurrentLevel());
+		worldA.startAllUpdateHandlers();
 		return scene;
 	}
 

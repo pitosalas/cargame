@@ -10,9 +10,10 @@ import org.anddev.andengine.extension.physics.box2d.util.constants.PhysicsConsta
 
 import com.salas.Level.IntersectionHandler;
 import com.salas.Level.RoadLoopHandler;
+import com.salas.entity.*;
+import com.salas.world.*;
 
 import android.util.Log;
-
 
 // AndEngine implementation of World class from carmodel
 public class WorldSpritesAnd extends WorldSprites {
@@ -30,13 +31,13 @@ public class WorldSpritesAnd extends WorldSprites {
 		world = worldA;
 	}
 	
-	void attach(EntitySprite s) {
+	public void attach(EntitySprite s) {
 		scene.attachChild(((EntitySpriteAnd)s).spriteAnd());
 	}
 
 	@Override
-	void showCursorAt(Vector2 loc) {
-		UtilitySprites.cursorSprite(box2d2PixelCoordinate(loc));
+   public void showCursorAt(Vector2 loc) {
+		UtilitySprites.setCursorSprite("$MAIN", box2d2PixelCoordinate(loc));
 	}
 	
 	static Vector2 pixel2Box2dCoordinate(Vector2 from) {
@@ -50,7 +51,7 @@ public class WorldSpritesAnd extends WorldSprites {
 	}
 
 	@Override
-	void showRedVectorFrom(Vector2 origin, Vector2 vector) {
+	public void showRedVectorFrom(Vector2 origin, Vector2 vector) {
 	if (redVector == null) {
 			redVector = new Line(0, 0, 0, 0, 2.0f);
 			redVector.setColor(1.0f, 0.0f, 0.0f);
@@ -62,7 +63,7 @@ public class WorldSpritesAnd extends WorldSprites {
 	}
 
 	@Override
-	void showGreenVectorFrom(Vector2 origin, Vector2 vector) {
+	public void showGreenVectorFrom(Vector2 origin, Vector2 vector) {
 	if (greenVector == null) {
 			greenVector = new Line(0, 0, 0, 0, 2.0f);
 			greenVector.setColor(0.0f, 1.0f, 0.0f);
@@ -74,10 +75,10 @@ public class WorldSpritesAnd extends WorldSprites {
 	}
 	
    @Override
-	void showRoadGraph(Level level) {
+   public void showRoadGraph(Level level) {
 	   level.loopOverAllIntersections(new IntersectionHandler() {         
          @Override
-         public void intersection(String name, Vector2 position) {
+         public void intersection(Intersection inter, String name, Vector2 position) {
             UtilitySprites.setCursorSprite(name, box2d2PixelCoordinate(position)); 
          }
       });
@@ -104,7 +105,7 @@ public class WorldSpritesAnd extends WorldSprites {
    }
 
    @Override
-	void showTooltipA(float x, float y, String text) {
+   public void showTooltipA(float x, float y, String text) {
 		Vector2 pixelWhere = box2d2PixelCoordinate(new Vector2(x,y));
 		if (toolTipA == null) {
 			toolTipA = new TextBox((int) pixelWhere.x, (int) pixelWhere.y);
@@ -115,7 +116,7 @@ public class WorldSpritesAnd extends WorldSprites {
 		toolTipA.textBox.setText(text);
 	}
 
-	void showTooltipB(float x, float y, String text) {
+   public void showTooltipB(float x, float y, String text) {
 		Vector2 pixelWhere = box2d2PixelCoordinate(new Vector2(x,y));
 		if (toolTipB == null) {
 			toolTipB = new TextBox((int) pixelWhere.x, (int) pixelWhere.y);
@@ -125,10 +126,4 @@ public class WorldSpritesAnd extends WorldSprites {
 		toolTipB.textBox.setColor(0.0f, 1.0f, 1.0f);
 		toolTipB.textBox.setText(text);
 	}
-
-   @Override
-   void log(String string) {
-   	Log.i("world", string);
-   }
-	
 }
