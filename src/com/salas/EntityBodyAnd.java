@@ -15,9 +15,9 @@ public class EntityBodyAnd extends EntityBody {
 	final WorldAnd world;
 	final WorldBodiesAnd worldBods;
 	
-	static TweakBox tweakMaxSpeed = new TweakBox("Max Speed", 5.0f, 0.5f);
+	static TweakBox tweakMaxSpeed = new TweakBox("Max Speed", 8.0f, 0.5f);
 	
-	static TweakBox tweakDensity = new TweakBox("Density", 0.2f, 0.05f) {
+	static TweakBox tweakDensity = new TweakBox("Density", 0.1f, 0.05f) {
 		public void apply() { // called when density changes
 			for (VehicleEntity ent : WorldAnd.singleton().department.vehicles.all()) {
 				ent.body.recalcMass();
